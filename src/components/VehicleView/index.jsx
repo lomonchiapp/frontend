@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import { useVehicleState } from "../../context/useVehicleState";
 import { FinancingForm } from "../forms/FinancingForm";
-import { FileSql } from "@phosphor-icons/react";
 
 export const VehicleView = () => {
   const { selectedVehicle } = useVehicleState();

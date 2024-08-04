@@ -3,57 +3,54 @@ import { Box, Button, Grid, Stack } from '@mui/material'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/navigation'
-import { Navigation } from 'swiper/modules'
+import { Navigation, Autoplay } from 'swiper/modules'
 export const Slideshow = () => {
   return (
     <Swiper
-      navigation={true}
-      modules={[Navigation]}
-      className='mySwiper'
+      modules={[Autoplay]}
+      style={styles.slider}
+      slidesPerView={3}
+      speed={4000}
+      autoplay={{
+        delay: 0,
+        disableOnInteraction: false,
+      }}
+      loop={true}
     >
-      <SwiperSlide>
-        <Box sx={styles.slide}>
-          <h1>Slide 1</h1>
-          <p>Slide 1 content</p>
-          <Button variant="contained" color="secondary">
-            Learn More
-          </Button>
-        </Box>
+      <SwiperSlide style={styles.slide}>
+        <Box sx={styles.slideLogo} component="img" src="brands/honda-white.png" />
       </SwiperSlide>
-      <SwiperSlide>
-        <Box sx={styles.slide}>
-          <h1>Slide 2</h1>
-          <p>Slide 2 content</p>
-          <Button variant="contained" color="secondary">
-            Learn More
-          </Button>
-        </Box>
+      <SwiperSlide style={styles.slide}>
+      <Box  sx={styles.slideLogo} component="img" src="brands/yamaha-white.png" />
       </SwiperSlide>
-      <SwiperSlide>
-        <Box sx={styles.slide}>
-          <h1>Slide 3</h1>
-          <p>Slide 3 content</p>
-          <Button variant="contained" color="secondary">
-            Learn More
-          </Button>
-        </Box>
+      <SwiperSlide style={styles.slide}>
+      <Box  sx={styles.slideLogo} component="img" src="brands/tvs-white.png" />
+      </SwiperSlide>
+      <SwiperSlide style={styles.slide}>
+      <Box  sx={styles.slideLogo} component="img" src="brands/hero-white.png" />
       </SwiperSlide>
     </Swiper>
   )
 }
 
 const styles = {
+    slider: {
+      width:'500px',
+      height:'200px',
+      margin:'auto',
+      '.swiper-button-prev': {
+        color: 'black',
+      },
+      '.swiper-button-next': {
+        color: 'black',
+      },
+    },
     slide: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#f4f4f4',
-        h1: {
-        fontSize: '3rem',
-        },
-        p: {
-        fontSize: '1.5rem',
-        },
+       
+    },
+    slideLogo: {
+      width: 150,
+      height: 'auto',
+      objectFit: 'contain',
     },
     }

@@ -7,7 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { XCircle } from '@phosphor-icons/react';
 
-export const VehicleDialog = ({children, title, openDialog, setOpenDialog}) => {
+export const AboutDialog = ({children, title, openDialog, setOpenDialog}) => {
 
     const handleClose = () => {
         setOpenDialog(false)
@@ -19,8 +19,8 @@ export const VehicleDialog = ({children, title, openDialog, setOpenDialog}) => {
       onClose={handleClose}
       PaperProps={{
         sx: {
-          minWidth: '600px',
-          minHeight: '550px',
+          minWidth: '70%',
+          minHeight: '50%',
         },
       }}
     >

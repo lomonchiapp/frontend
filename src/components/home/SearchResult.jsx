@@ -35,6 +35,8 @@ export const SearchResult = ({ text, setOpenDialog, openDialog }) => {
     fetchVehicles();
   }, []);
 
+
+
   const filteredVehicles = vehicles.filter((vehicle) =>
     vehicle.name.toLowerCase().includes(text.toLowerCase())
   );
@@ -45,6 +47,11 @@ export const SearchResult = ({ text, setOpenDialog, openDialog }) => {
     <Grid xs={8} sx={styles.box} container>
       <Grid item xs={12}>
         <Grid sx={styles.vehiclesContainer}>
+          {text && filteredVehicles.length === 0 ? (
+            <Box sx={styles.emptyResult}>
+              <h2>No se encontraron vehículos</h2>
+            </Box>            
+          ): null}
           {filteredVehicles
             .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
             .map((vehicle) => (
@@ -99,6 +106,7 @@ const styles = {
     boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.1)',
     margin: 2,
     minWidth:600,
+    minHeight:500,
   },
   vehiclesContainer: {
     display: 'flex',

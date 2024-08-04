@@ -1,5 +1,6 @@
 import React from "react";
 import { Box,  Grid, Typography } from "@mui/material";
+import { Cursor } from "@phosphor-icons/react";
 
 
 export const VehicleCard = ({ title, price, category, cc,brand, image }) => {
@@ -40,6 +41,7 @@ const styles = {
     minHeight: "150px",
     maxWidth: "180px",
     maxHeight: "120px",
+    cursor: "pointer",
     padding: "1rem",
     margin: "1rem",
   },

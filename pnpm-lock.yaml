@@ -20,6 +20,9 @@ dependencies:
   firebase:
     specifier: ^10.12.4
     version: 10.12.4
+  frontend:
+    specifier: 'file:'
+    version: file:(@types/react@18.3.3)
   lodash:
     specifier: ^4.17.21
     version: 4.17.21
@@ -4333,4 +4336,29 @@ packages:
       '@types/react': 18.3.3
       react: 18.3.1
       use-sync-external-store: 1.2.0(react@18.3.1)
+    dev: false
+
+  file:(@types/react@18.3.3):
+    resolution: {directory: '', type: directory}
+    id: 'file:'
+    name: frontend
+    dependencies:
+      '@emotion/react': 11.11.4(@types/react@18.3.3)(react@18.3.1)
+      '@emotion/styled': 11.11.5(@emotion/react@11.11.4)(@types/react@18.3.3)(react@18.3.1)
+      '@mui/material': 5.16.4(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1)
+      '@phosphor-icons/react': 2.1.7(react-dom@18.3.1)(react@18.3.1)
+      firebase: 10.12.4
+      lodash: 4.17.21
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      react-router-dom: 6.25.1(react-dom@18.3.1)(react@18.3.1)
+      swiper: 11.1.5
+      tailwindcss: 3.4.6
+      zustand: 4.5.4(@types/react@18.3.3)(react@18.3.1)
+    transitivePeerDependencies:
+      - '@react-native-async-storage/async-storage'
+      - '@types/react'
+      - immer
+      - supports-color
+      - ts-node
     dev: false
