@@ -1,43 +1,47 @@
-import React, { useState, useEffect } from "react";
-import { Grid, Box, Typography} from "@mui/material";
-import {
-  collection,
-  getDocs,
-} from "firebase/firestore";
-import { VehicleCard } from "../VehicleCard";
-import { database } from "../../firebase";
-import { useVehicleState } from "../../context/useVehicleState";
-import { shuffle } from "lodash";
-import { BrandSlideshow } from "./BrandSlideshow";
+// ** React Import
+import React, { useState, useEffect } from "react"
+import { Grid, Box, Typography } from "@mui/material"
+// ** Firebase Imports
+import { collection, getDocs } from "firebase/firestore"
+import { database } from "../../firebase"
+// ** Custom Components
+import { VehicleCard } from "../VehicleCard"
 
-export const EmptyResult = ({ text, setOpenDialog, openDialog, setSearchText}) => {
-  const [vehicles, setVehicles] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const { setSelectedVehicle } = useVehicleState();
+import { shuffle } from "lodash"
+import { BrandSlideshow } from "./BrandSlideshow"
+// ** Global Imports
+import { useSearchState } from "../../context/useSearchState"
+import { useVehicleState } from "../../context/useVehicleState"
+
+export const EmptyResult = ({ setOpenDialog}) => {
+  const [vehicles, setVehicles] = useState([])
+  const [loading, setLoading] = useState(false)
+  const { setSelectedVehicle } = useVehicleState()
+  const { setSearchText } = useSearchState()
 
 
   const fetchVehicles = async () => {
-    setLoading(true);
-    const vehiclesCollection = collection(database, "vehicles");
-    const vehiclesSnapshot = await getDocs(vehiclesCollection);
+    setLoading(true)
+    const vehiclesCollection = collection(database, "vehicles")
+    const vehiclesSnapshot = await getDocs(vehiclesCollection)
     const vehiclesData = vehiclesSnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
 
-    const randomVehicles = shuffle(vehiclesData).slice(0, 4);
-    setVehicles(randomVehicles);
-    setLoading(false);
+    const randomVehicles = shuffle(vehiclesData).slice(0, 4)
+    setVehicles(randomVehicles)
+    setLoading(false)
   };
 
   useEffect(() => {
-    fetchVehicles();
-  }, []);
+    fetchVehicles()
+  }, [])
 
   return (
     <Grid sx={styles.box} container>
       <Box>
-        <BrandSlideshow setSearchText={setSearchText} />
+        <BrandSlideshow />
         <Box sx={styles.helperTextContainer}>
         <Typography sx={{...styles.helperText, fontWeight:'bold'}}>
         ¿No sabes por donde empezar?
@@ -73,17 +77,17 @@ export const EmptyResult = ({ text, setOpenDialog, openDialog, setSearchText}) =
 
 const styles = {
   box: {
-    padding: 2,
+    zIndex: 1111115,
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#f4f4f4",
-    borderRadius: 10,
     boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.1)",
+    transition: "all 0.3s ease",
     margin: 2,
-    minWidth: 600,
-    minHeight: 500,
+    minWidth: 1000,
+    minHeight: 390,
   },
   headerContainer: {
     mt:5,
@@ -91,6 +95,7 @@ const styles = {
   header:{
     fontSize: 20,
     fontWeight: 'bold',
+    marginBottom:2,
   },
   helperTextContainer:{
     p:1,

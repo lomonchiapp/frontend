@@ -13,18 +13,19 @@ export const Navigation = () => {
         <List color="white" size={30} />
       </Box>
       {/* Logo Column */}
-      <Grid sx={{zIndex:3}} item xs={3}>
-        <Box style={{
-    zIndex: 3,
-    top: 20,
-    width: "100%",
-    maxWidth: logoWidth,
-    height: "auto",
-    transition:"max-width 0.5s ease"
-  }} component="img" src="logo.png" />
+      <Grid sx={{zIndex:3}} item xs={4}>
+        <Box component="img" src="logo.png" alt="logo" sx={{
+          width: {
+            xs: "150px",
+            sm: "200px",
+            md: "130px",
+            lg: "150px",
+            xl: "200px",
+          }
+        }}/>
       </Grid>
       {/* Navigation Column */}
-      <Grid md={9} lg={9} xl={9}>
+      <Grid md={8} lg={8} xl={8}>
         <Stack sx={styles.navigation} direction="row" spacing={2}>
           <Box sx={styles.boxMenu}>
           <Link onClick={() => setDealers(true)}>Consorcios</Link>
@@ -63,6 +64,9 @@ const styles = {
       px: "1.5rem",
       py: "0.5rem",
       color: "white",
+      minWidth:{
+        md: "100px",
+      },
       fontSize: 14,
       borderBottom: "solid 1px",
       borderBottomColor: "transparent",
@@ -83,7 +87,7 @@ const styles = {
     alignItems:'center',
     },
   header: {
-    px: "15rem",
+    px: "7rem",
     py: "1rem",
     pt: 4.5,
     display: "flex",

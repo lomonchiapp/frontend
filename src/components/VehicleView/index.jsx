@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState} from "react"
 import {
   Grid,
   Box,
@@ -7,14 +7,14 @@ import {
   TableContainer,
   TableRow,
   TableCell,
-} from "@mui/material";
-import { useVehicleState } from "../../context/useVehicleState";
-import { FinancingForm } from "../forms/FinancingForm";
+} from "@mui/material"
+import { useVehicleState } from "../../context/useVehicleState"
+import { FinancingForm } from "../forms/FinancingForm"
 
 export const VehicleView = () => {
-  const { selectedVehicle } = useVehicleState();
-  const [initDeposit, setInitDeposit] = useState(0);
-  const [financingTime, setFinancingTime] = useState(12);
+  const { selectedVehicle } = useVehicleState()
+  const [initDeposit, setInitDeposit] = useState(0)
+  const [financingTime, setFinancingTime] = useState(12)
     const monthlyPayment = (selectedVehicle.salePrice - initDeposit) / financingTime;
   return (
     <Grid sx={styles.view} container>

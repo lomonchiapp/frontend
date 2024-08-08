@@ -3,14 +3,17 @@ import { Grid, Box, Pagination, Button, Select, MenuItem } from '@mui/material';
 import { collection, query, orderBy, limit, startAfter, getDocs } from 'firebase/firestore';
 import { VehicleCard } from '../VehicleCard';
 import { database } from '../../firebase';
+// ** Global Imports
+import { useSearchState } from '../../context/useSearchState';
 import { useVehicleState } from '../../context/useVehicleState';
 
-export const SearchResult = ({ text, setOpenDialog, openDialog }) => {
+export const SearchResult = ({ setOpenDialog, openDialog }) => {
   const [vehicles, setVehicles] = useState([])
   const [loading, setLoading] = useState(false)
   const [itemsPerPage, setItemsPerPage] = useState(8)
   const [currentPage, setCurrentPage] = useState(1)
   const { setSelectedVehicle } = useVehicleState()
+  const {searchText } = useSearchState()
 
 
   const handleChangePage = (event, value) => {
@@ -38,7 +41,7 @@ export const SearchResult = ({ text, setOpenDialog, openDialog }) => {
 
 
   const filteredVehicles = vehicles.filter((vehicle) =>
-    vehicle.name.toLowerCase().includes(text.toLowerCase())
+    vehicle.name.toLowerCase().includes(searchText.toLowerCase())
   );
 
   const pageCount = Math.ceil(filteredVehicles.length / itemsPerPage);
@@ -47,7 +50,7 @@ export const SearchResult = ({ text, setOpenDialog, openDialog }) => {
     <Grid xs={8} sx={styles.box} container>
       <Grid item xs={12}>
         <Grid sx={styles.vehiclesContainer}>
-          {text && filteredVehicles.length === 0 ? (
+          {searchText && filteredVehicles.length === 0 ? (
             <Box sx={styles.emptyResult}>
               <h2>No se encontraron vehículos</h2>
             </Box>            
@@ -102,10 +105,9 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f4f4f4',
-    borderRadius: 10,
     boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.1)',
     margin: 2,
-    minWidth:600,
+    minWidth:1000,
     minHeight:500,
   },
   vehiclesContainer: {
@@ -113,7 +115,7 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    gap: 2,
+    gap: 5,
   },
   paginationContainer: {
     display: 'flex',

@@ -6,13 +6,16 @@ import { useVehicleState } from "../../../context/useVehicleState"
 export const FinancingForm = ({setInitDeposit, initDeposit, financingTime, setFinancingTime }) => {
     const { selectedVehicle } = useVehicleState()
   const minPercentage = 0.35;
-  const minDeposit = selectedVehicle.salePrice * minPercentage;
+  const minDeposit = getMinDeposit()
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('es-ES', {
       style: 'currency',
       currency: 'DOP',
     }).format(value);
   };
+  function getMinDeposit() {
+    return selectedVehicle.salePrice * minPercentage;
+  }
 
   return (
     <Grid sx={{

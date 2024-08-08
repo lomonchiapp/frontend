@@ -17,7 +17,7 @@ export const VehicleCard = ({ title, price, category, cc,brand, image }) => {
         </Box>
       {image ? <Box component="img" src={image} sx={styles.image} /> : <Box sx={styles.imagePlaceholder} />}
         <Box sx={styles.cardContent}>
-          <Typography sx={styles.title} variant="h2">
+          <Typography sx={styles.title}>
             {title}
           </Typography>
         </Box>
@@ -31,19 +31,18 @@ const styles = {
     display: "flex",
     position: "relative",
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "start",
     overflow: "hidden",
     alignItems: "center",
-    backgroundColor: "#f4f4f4",
-    borderRadius: "10px",
+    backgroundColor: 'white',
     boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.1)",
     minWidth: "180px",
-    minHeight: "150px",
+    minHeight: "140px",
     maxWidth: "180px",
-    maxHeight: "120px",
+    maxHeight: "140px",
     cursor: "pointer",
-    padding: "1rem",
-    margin: "1rem",
+    p: '0px 0px 5px 0px'
+    
   },
   ccContainer:{
     position: "absolute",
@@ -62,31 +61,30 @@ const styles = {
     minHeight: 100,
     backgroundColor: "grey",
     height: "80",
-    borderRadius: "10px",
   },
   title: {
     textAlign: "center",
-    fontSize: "1rem",
+    fontSize: "10px",
     pt:1,
+    px:2,
     fontWeight: "bold",
   },
   image: {
     width: "100%",
-    height: "80",
-    borderRadius: "10px",
+    maxHeight: 100,
   },
   priceContainer: {
     position: "absolute",
-    top: 1,
-    left: 1,
-    borderRadius: "5px",
+    top: 0,
+    left: 0,
+
     border: "1px solid green",
     backgroundColor: "#4CAF50",
     p: "3px",
     color: "white",
   },
   priceText:{
-    fontSize: 15,
+    fontSize: 12,
     fontWeight: "bold",
   },
   cardContent: {

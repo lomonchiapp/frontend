@@ -3,7 +3,7 @@ import { Box, Button, Grid, Stack } from '@mui/material'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/navigation'
-import { Navigation, Autoplay } from 'swiper/modules'
+import { Autoplay } from 'swiper/modules'
 export const Slideshow = () => {
   return (
     <Swiper
@@ -22,7 +22,7 @@ export const Slideshow = () => {
       </SwiperSlide>
       <SwiperSlide style={styles.slide}>
       <Box  sx={styles.slideLogo} component="img" src="brands/yamaha-white.png" />
-      </SwiperSlide>
+      </SwiperSlide>s
       <SwiperSlide style={styles.slide}>
       <Box  sx={styles.slideLogo} component="img" src="brands/tvs-white.png" />
       </SwiperSlide>
@@ -36,7 +36,7 @@ export const Slideshow = () => {
 const styles = {
     slider: {
       width:'500px',
-      height:'200px',
+      height:'80px',
       margin:'auto',
       '.swiper-button-prev': {
         color: 'black',
@@ -50,7 +50,6 @@ const styles = {
     },
     slideLogo: {
       width: 150,
-      height: 'auto',
       objectFit: 'contain',
     },
     }
