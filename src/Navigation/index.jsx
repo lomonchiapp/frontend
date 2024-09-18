@@ -9,7 +9,7 @@ import { alignProperty } from "@mui/material/styles/cssUtils";
 import { MobileMenu } from "./MobileMenu";
 
 export const Navigation = () => {
-  const { logoWidth, setAbout, setContact, setDealers } = useThemeState();
+  const { setAbout, setContact, setGarantia, setDealers } = useThemeState();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleOnClose = () => {
@@ -29,11 +29,17 @@ export const Navigation = () => {
           alt="logo"
           sx={{
             width: {
-              xs: "150px",
-              sm: "150px",
-              md: "130px",
-              lg: "150px",
+              xs: "180px",
+              sm: "200px",
+              md: "160px",
+              lg: "180px",
               xl: "200px",
+            },
+            position: {
+              xs:'absolute',
+              sm:'absolute',
+              md:'relative',
+
             },
             display: {
               xs: "block",
@@ -41,7 +47,7 @@ export const Navigation = () => {
               lg: "block",
             },
             mb: {
-              xs: -22,
+              xs: -27,
               md: 0,
             },
             pb:{
@@ -53,10 +59,11 @@ export const Navigation = () => {
       </Grid>
       {/* Navigation Column */}
       <Grid md={8} lg={9} xl={9} sx={{ display: { xs: "none", md: "block" } }}>
-        <Stack sx={styles.navigation} direction="row" spacing={2}>
+        <Stack sx={styles.navigation} direction="row">
           <Box sx={styles.boxMenu}>
             <Link onClick={() => setDealers(true)}>Consorcios</Link>
-            <Link onClick={() => setAbout(true)}>Sobre Nosotros</Link>
+            <Link onClick={() => setAbout(true)}>Nosotros</Link>
+            <Link onClick={() => setGarantia(true)}>Garantía</Link>
             <Link onClick={() => setContact(true)}>Contáctanos</Link>
             <Link
               to="https://orientalramirez-a8745.web.app/"
@@ -104,12 +111,9 @@ const styles = {
     zIndex: 2,
     a: {
       textDecoration: "none",
-      px: "1.5rem",
       py: "0.5rem",
+      px: "1.3rem",
       color: "white",
-      minWidth: {
-        md: "100px",
-      },
       fontSize: 14,
       borderBottom: "solid 1px",
       borderBottomColor: "transparent",
@@ -133,12 +137,22 @@ const styles = {
     px: "7rem",
     py: "1rem",
     pt: 4.5,
+    mb: {
+      xs: -30,
+      sm: -30,
+      md: 0,
+    },
     display: "flex",
     flexDirection: "row",
     alignItems: "start",
   },
   menuIcon: {
     position: "absolute",
+    display:{
+      xs:'block',
+      md:'block',
+      lg:'none',
+    },
     zIndex: 4,
     top: 38,
     height: 50,

@@ -16,6 +16,7 @@ export const MenuDrawer = ({ children, open, setOpen }) => {
         '& .MuiDrawer-paper': {
           backgroundColor: '#212121', // Dark background color
           color: 'white', // Text color
+          width: '220px', // Width of the drawer
           padding: '20px', // Padding
         }
       }}

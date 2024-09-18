@@ -40,18 +40,26 @@ export const EmptyResult = ({ setOpenDialog}) => {
 
   return (
     <Grid sx={styles.box} container>
-      <Box>
+      <Grid item
+        xs={10}
+        sm={10}
+        md={12}
+        lg={12}
+        xl={12}
+      >
         <BrandSlideshow />
         <Box sx={styles.helperTextContainer}>
         <Typography sx={{...styles.helperText, fontWeight:'bold'}}>
         ¿No sabes por donde empezar?
           </Typography><Typography sx={{...styles.helperText, ml:0.5}}> Selecciona tu marca favorita.</Typography>
           </Box>
-      </Box>
+      </Grid>
       <Box sx={styles.headerContainer}>
         <Typography sx={styles.header}>Ultimos Vehículos Buscados</Typography>
       </Box>
-        <Grid sx={styles.vehiclesContainer}>
+        <Grid item sx={styles.vehiclesContainer}
+          xs={12} sm={12} md={12} lg={12} xl={12}>
+        
           {vehicles.map((vehicle) => (
             <Box
               onClick={() => {
@@ -77,7 +85,7 @@ export const EmptyResult = ({ setOpenDialog}) => {
 
 const styles = {
   box: {
-    zIndex: 1111115,
+    zIndex: 300,
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -85,9 +93,12 @@ const styles = {
     backgroundColor: "#f4f4f4",
     boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.1)",
     transition: "all 0.3s ease",
+    minHeight: {
+      xs: 600,
+      sm: 600,
+      md:400,
+    },
     margin: 2,
-    minWidth: 1000,
-    minHeight: 390,
   },
   headerContainer: {
     mt:5,

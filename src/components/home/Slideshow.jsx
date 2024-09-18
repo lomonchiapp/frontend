@@ -7,37 +7,68 @@ import { Autoplay } from 'swiper/modules'
 export const Slideshow = () => {
   return (
     <Swiper
-      modules={[Autoplay]}
       style={styles.slider}
-      slidesPerView={3}
-      speed={4000}
+      spaceBetween={50}
+      modules={[Autoplay]}
+      slidesPerView={1}
       autoplay={{
-        delay: 0,
+        delay: 5000,
         disableOnInteraction: false,
       }}
-      loop={true}
+      breakpoints={{
+        400: {
+          slidesPerView: 3,
+          spaceBetween: 10,
+        },
+        640: {
+          slidesPerView: 4,
+          spaceBetween: 10,
+        },
+        768: {
+          slidesPerView: 4,
+          spaceBetween: 50,
+        },
+        1024: {
+          slidesPerView: 5,
+          spaceBetween: 50,
+        },
+      }}
     >
       <SwiperSlide style={styles.slide}>
-        <Box sx={styles.slideLogo} component="img" src="brands/honda-white.png" />
+        <Box sx={styles.slideLogo} component="img" src="brands/nipponia-white.png" />
       </SwiperSlide>
       <SwiperSlide style={styles.slide}>
-      <Box  sx={styles.slideLogo} component="img" src="brands/yamaha-white.png" />
-      </SwiperSlide>s
-      <SwiperSlide style={styles.slide}>
-      <Box  sx={styles.slideLogo} component="img" src="brands/tvs-white.png" />
+        <Box sx={styles.slideLogo} component="img" src="brands/pgo-white.png" />
       </SwiperSlide>
       <SwiperSlide style={styles.slide}>
-      <Box  sx={styles.slideLogo} component="img" src="brands/hero-white.png" />
+        <Box sx={styles.slideLogo} component="img" src="brands/supertucan-white.png" />
+      </SwiperSlide>
+      <SwiperSlide style={styles.slide}>
+        <Box sx={styles.slideLogo} component="img" src="brands/loncin-white.png" />
+      </SwiperSlide>
+      <SwiperSlide style={styles.slide}>
+        <Box sx={styles.slideLogo} component="img" src="brands/hero-white.png" />
+      </SwiperSlide>
+      <SwiperSlide style={styles.slide}>
+        <Box sx={styles.slideLogo} component="img" src="brands/supergato-white.png" />
+      </SwiperSlide>
+      <SwiperSlide style={styles.slide}>
+        <Box sx={styles.slideLogo} component="img" src="brands/tvs-white.png" />
       </SwiperSlide>
     </Swiper>
-  )
-}
+  );
+};
 
 const styles = {
     slider: {
-      width:'500px',
+      width:{
+        xs: '100%',
+        sm: '100%',
+        md: '100%',
+        lg: '100%',
+        xl: '100%',
+      },
       height:'80px',
-      margin:'auto',
       '.swiper-button-prev': {
         color: 'black',
       },
@@ -45,11 +76,9 @@ const styles = {
         color: 'black',
       },
     },
-    slide: {
-       
-    },
+
     slideLogo: {
-      width: 150,
+      width: 120,
       objectFit: 'contain',
     },
     }

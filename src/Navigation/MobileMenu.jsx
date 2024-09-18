@@ -1,33 +1,72 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, List, ListItem } from "@mui/material";
+import { Link } from "react-router-dom";
+import { FacebookLogo, InstagramLogo, XLogo } from "@phosphor-icons/react";
 
 
 export const MobileMenu = () => {
   return (
     <Box sx={styles.container}>
-        <Box>
+        <Box sx={styles.logoContainer}>
             <img src="logo.png" alt="logo" style={{ width: '150px' }} />
         </Box>
-        <nav style={styles.nav}>
-            <ul style={styles.menu}>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
+        <List sx={styles.menu}>
+            <ListItem>
+                <Link to="/">Puntos de Venta</Link>
+            </ListItem>
+            <ListItem>
+                <Link to="/about">Quienes Somos</Link>
+            </ListItem>
+            <ListItem>
+                <Link to="/about">Quiero Vender</Link>
+            </ListItem>
+            <ListItem>
+                <Link to="/contact">Contactar a Alguien</Link>
+            </ListItem>
+            
+        </List>
+        <Box sx={styles.socialBox}>
+            <Box sx={styles.socialIcon}>
+                <FacebookLogo
+                    style={{ color: 'white', fontSize: '30px' }}
+                />
+            </Box>
+            <Box sx={styles.socialIcon}>
+                <InstagramLogo
+                    style={{ color: 'white', fontSize: '30px' }}
+                />
+            </Box>
+            <Box sx={styles.socialIcon}>
+                <XLogo style={{ color: 'white', fontSize: '30px' }} />
+            </Box>
+        </Box>
     </Box>
   )
 };
 
 const styles = {
-    drawer: {
-      '& .MuiDrawer-paper': {
-        backgroundColor: '#333', // Dark background color
-        color: 'white', // Text color
-        width: '250px', // Width of the drawer
-      },
-    },
+   logoContainer:{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: '1  0px',
+    width: '100%',
+    img:{
+      width: '150px',
+      mb:4,
+    }
+   },
+   socialBox:{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    marginTop: '20px',
+    backgroundColor: '#3e3e3e',
+    gap:2,
+    padding: '10px 0',
+    borderRadius: '0 0 10px 10px',
+   },
     nav: {
       display: 'flex',
       justifyContent: 'center',
@@ -60,6 +99,13 @@ const styles = {
       color: 'white',
       height: '100%',
       width: '100%',
+    },
+    socialBox: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      marginTop: '20px',
     },
   },
 };

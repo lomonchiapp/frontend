@@ -17,11 +17,29 @@ export const BrandSlideshow = () => {
     <Swiper
       modules={[Autoplay]}
       style={styles.slider}
-      slidesPerView={4}
+      slidesPerView={1}
       speed={4000}
       autoplay={{
         delay: 0,
         disableOnInteraction: false,
+      }}
+      breakpoints={{
+        400: {
+          slidesPerView: 3,
+          spaceBetween: 10,
+        },
+        640: {
+          slidesPerView: 4,
+          spaceBetween: 10,
+        },
+        768: {
+          slidesPerView: 4,
+          spaceBetween: 50,
+        },
+        1024: {
+          slidesPerView: 5,
+          spaceBetween: 50,
+        },
       }}
       loop={true}
     >
@@ -59,7 +77,7 @@ export const BrandSlideshow = () => {
 const styles = {
     slider: {
       zIndex: 399999,
-      width:'700px',
+      width:'100%',
       margin:'auto',
       '.swiperButtonNext': {
         color: 'black',

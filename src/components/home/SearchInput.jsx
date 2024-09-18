@@ -40,5 +40,23 @@ export const SearchInput = ({handleFocus, handleBlur}) => {
 const styles ={
     searchInput: {
         width: "100%",
-      }
+      },
+      resetButton:{
+        cursor:'pointer',
+        borderRadius: 5,
+        display:'flex',
+        flexDirection: 'row',
+        alignItems:'center',
+        px:1,
+        borderColor: 'transparent',
+        backgroundColor: '#B30303',
+        transition: 'background-color 0.3s',
+        '&:hover':{
+          backgroundColor: '#FF0000',
+        }
+      },
+      resetBtnText:{
+        fontSize:12,
+        color:'white',
+      },
 }

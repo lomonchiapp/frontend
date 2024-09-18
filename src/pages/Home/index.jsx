@@ -16,8 +16,11 @@ import { VehicleDialog } from "../../components/VehicleDialog"
 import { VehicleView } from "../../components/VehicleView"
 import { EmptyResult } from "../../components/home/EmptyResult"
 import { AboutDialog } from "../../components/AboutDialog"
+import { Dealers } from "../../components/DealersDialog/Dealers";
+import {DealersDialog } from "../../components/DealersDialog"
 import { AboutContent } from "../../components/AboutDialog/AboutContent"
 import {SearchInput} from '../../components/home/SearchInput'
+import { ContactDrawer } from "../../components/ContactDrawer";
 
 
 export const Home = () => {
@@ -25,7 +28,11 @@ export const Home = () => {
   const {
     setLogoWidth,
     about,
+    dealers,
+    setDealers,
     setAbout,
+    contact,
+    setContact
   } = useThemeState();
 
   // Estados locales
@@ -50,12 +57,18 @@ export const Home = () => {
     <Grid sx={styles.home} container>
       <Box sx={styles.homeBefore} />
       <Grid sx={showResult ? styles.pageContainerActive : styles.pageContainer}>
-        <Box sx={showResult ? styles.headerBoxGone : styles.headerBox}>
+        <Grid item
+          xs={10}
+          sm={9}
+          md={8}
+          lg={6}
+          xl={6}
+        sx={showResult ? styles.headerBoxGone : styles.headerBox}>
           <Typography sx={styles.homeTitle}>
             ¡La Casa de las mejores Marcas!
           </Typography>
           <Slideshow />
-        </Box>
+        </Grid>
         <Grid item
           xs={10}
           sm={10}
@@ -63,7 +76,7 @@ export const Home = () => {
           lg={8}
           xl={8}
         sx={styles.searchContainer}>
-          <h1>¿Que vehículo te interesa?</h1>
+          <Typography sx={styles.searchLabel}>Hola, ¿Que vehículo te interesa?</Typography>
           <Grid sx={{width:'90%'}}>
             <SearchInput
               setSearchText={setSearchText}
@@ -80,8 +93,8 @@ export const Home = () => {
           mt:2,
         }} container>
           <Grid item
-            xs={10}
-            sm={10}
+            xs={12}
+            sm={12}
             md={10}
             lg={8}
             xl={8}
@@ -107,6 +120,11 @@ export const Home = () => {
             <AboutDialog openDialog={about} setOpenDialog={setAbout}>
               <AboutContent />
             </AboutDialog>
+            <DealersDialog openDialog={dealers} setOpenDialog={setDealers}>
+              <Dealers/>
+                </DealersDialog>
+                <ContactDrawer open={contact} setOpen={setContact}>
+                  </ContactDrawer>
           </Grid>
         </Grid>
       </Grid>
@@ -116,12 +134,16 @@ export const Home = () => {
 
 const styles = {
   home: {
-    
     width: "100%",
     position: "relative",
     flexDirection: "column",
     display: "flex",
-    height: "100vh",
+    minHeight:{
+      xs:"1280px",
+      sm:"1280px",
+      md:"900px",
+      lg:"900px",
+    },
     justifyContent: "center",
     alignItems: "center",
     backgroundImage: "url('main.jpg')",
@@ -130,7 +152,7 @@ const styles = {
       xs: -7,
       sm: -7,
       md: -15,
-      lg: -25,
+      lg: -30,
       xl: -30,
     },
     zIndex: 0,
@@ -168,9 +190,10 @@ const styles = {
     position: "absolute",
     opacity:0,
     display: "flex",
+    minHeight: '100%',
     flexDirection: "column",
     alignItems: "center",
-    zIndex: 3,
+    zIndex: 300,
     transition: "opacity 1s ease",
   },
   resultContainerActive: {
@@ -178,7 +201,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    zIndex: 3,
+    zIndex: 300,
     transition: "opacity 1s ease",
     opacity: 1,
   },
@@ -191,6 +214,7 @@ const styles = {
     justifyContent: "center",
   },
   headerBox:{
+    zIndex:2,
     opacity:1,
     mb:2,
   },
@@ -199,24 +223,20 @@ const styles = {
     mb:2,
     transition:'opacity 0.3s ease'
   },
-  resetButton:{
-    cursor:'pointer',
-    borderRadius: 5,
-    display:'flex',
-    flexDirection: 'row',
-    alignItems:'center',
-    px:1,
-    borderColor: 'transparent',
-    backgroundColor: '#B30303',
-    transition: 'background-color 0.3s',
-    '&:hover':{
-      backgroundColor: '#FF0000',
-    }
+  searchLabel: {
+    color: "black",
+    fontFamily: "inherit",
+    fontSize: 25,
+    display: "flex",
+    mb: 2,
+    textAlign: "center",
   },
+
   homeTitle: {
     color: "white",
     fontFamily: "inherit",
-    fontSize: 35,
+    fontSize: 30,
+    display:'none',
     mb: 2,
     textAlign: "center",
     textShadow: "0px 0px 10px rgba(0,0,0,0.5)",
