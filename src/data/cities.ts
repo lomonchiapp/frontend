@@ -1,0 +1,20 @@
+import { City } from "@/types";
+export const cities: City[] = [
+  { name: 'Santo Domingo', lat: 18.4861, lng: -69.9312 },
+  { name: 'Santiago de los Caballeros', lat: 19.4792, lng: -70.6931 },
+  { name: 'La Romana', lat: 18.4339, lng: -68.9666 },
+  { name: 'San Pedro de Macorís', lat: 18.4500, lng: -69.3000 },
+  { name: 'Punta Cana', lat: 18.5601, lng: -68.3725 },
+  { name: 'Puerto Plata', lat: 19.7926, lng: -70.6621 },
+  { name: 'San Juan', lat: 18.4099, lng: -66.0119 },
+  { name: 'Bávaro', lat: 19.2222, lng: -70.5333 },
+  { name: 'Constanza', lat: 18.7500, lng: -70.7000 },
+  { name: 'Jarabacoa', lat: 18.8000, lng: -70.5000 },
+  { name: 'Moca', lat: 18.5333, lng: -70.5000 },
+  { name: 'San Cristóbal', lat: 18.4000, lng: -70.1000 },
+  { name: 'San Francisco de Macorís', lat: 18.2000, lng: -70.2000 },
+  { name: 'Boca Chica', lat: 18.4500, lng: -69.6061 },
+  { name: 'Higüey', lat: 18.6150, lng: -68.7070 },
+  { name: 'Juan Dolio', lat: 18.4333, lng: -69.4167 },
+  { name: 'Hato Mayor del Rey', lat: 18.7625, lng: -69.2569 },
+];
