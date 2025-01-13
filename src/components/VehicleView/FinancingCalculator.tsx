@@ -149,12 +149,6 @@ export function FinancingCalculator({ vehicle }: FinancingCalculatorProps) {
         </TableHeader>
         <TableBody>
           <TableRow>
-            <TableCell className="font-medium">Precio del Vehículo</TableCell>
-            <TableCell className="text-right font-medium">
-              RD$ {vehicle?.salePrice?.toLocaleString() || 0}
-            </TableCell>
-          </TableRow>
-          <TableRow>
             <TableCell>Depósito Inicial</TableCell>
             <TableCell className="text-right">
               RD$ {initialDeposit.toLocaleString()}
@@ -173,12 +167,6 @@ export function FinancingCalculator({ vehicle }: FinancingCalculatorProps) {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
               })}
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Cargo GPS</TableCell>
-            <TableCell className="text-right">
-              RD$ {gpsCharge.toLocaleString()}
             </TableCell>
           </TableRow>
           <TableRow>
