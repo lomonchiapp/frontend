@@ -46,14 +46,8 @@ export function FinancingCalculator({ vehicle }: FinancingCalculatorProps) {
     return totalAmount / financingMonths
   }
 
-  const calculateTotalInterest = () => {
-    if (!vehicle) return 0
-    const amountToFinance = vehicle.salePrice - initialDeposit
-    return amountToFinance * interestRate * financingMonths
-  }
 
   const monthlyPayment = calculateMonthlyPayment()
-  const totalInterest = calculateTotalInterest()
   const minInitDeposit = vehicle?.salePrice ? vehicle.salePrice * 0.3 : 0
 
   // Actualizar el input cuando cambie initialDeposit (por el slider)
@@ -160,15 +154,7 @@ export function FinancingCalculator({ vehicle }: FinancingCalculatorProps) {
               RD$ {(vehicle?.salePrice ? vehicle.salePrice - initialDeposit : 0).toLocaleString()}
             </TableCell>
           </TableRow>
-          <TableRow>
-            <TableCell>Interés Total ({financingMonths} meses)</TableCell>
-            <TableCell className="text-right">
-              RD$ {totalInterest.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-              })}
-            </TableCell>
-          </TableRow>
+
           <TableRow>
             <TableCell className="font-medium">Pago Mensual</TableCell>
             <TableCell className="text-right font-medium">
