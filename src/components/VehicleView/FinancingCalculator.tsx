@@ -143,6 +143,12 @@ export function FinancingCalculator({ vehicle }: FinancingCalculatorProps) {
         </TableHeader>
         <TableBody>
           <TableRow>
+            <TableCell>Precio del Vehículo</TableCell>
+            <TableCell className="text-right">
+              RD$ {vehicle?.salePrice?.toLocaleString() || 0}
+            </TableCell>
+          </TableRow>
+          <TableRow>
             <TableCell>Depósito Inicial</TableCell>
             <TableCell className="text-right">
               RD$ {initialDeposit.toLocaleString()}
