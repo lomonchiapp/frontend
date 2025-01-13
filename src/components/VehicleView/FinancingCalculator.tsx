@@ -93,7 +93,7 @@ export function FinancingCalculator({ vehicle }: FinancingCalculatorProps) {
             id="init-deposit"
             min={minInitDeposit}
             max={vehicle?.salePrice || 0}
-            step={1000}
+            step={100}
             value={[initialDeposit]}
             onValueChange={(value) => handleDepositChange(value[0])}
           />
