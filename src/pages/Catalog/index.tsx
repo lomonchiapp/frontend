@@ -178,7 +178,7 @@ export default function Catalog() {
     return (
         <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100 overflow-hidden">
             {/* Mobile Header */}
-            <div className="lg:hidden fixed top-16 left-0 right-0 z-30 bg-[#38367D] shadow-md p-4">
+            <div className="lg:hidden fixed top-16 left-0 right-0 z-20 bg-[#38367D] shadow-md p-4">
                 <div className="flex items-center w-full gap-2">
                     <div className="grid grid-cols-5 relative flex-1">
                         {/* Search column - 4/5 del espacio */}
@@ -189,7 +189,7 @@ export default function Catalog() {
                                 placeholder="Buscar vehículos..."
                                 value={searchText}
                                 onChange={handleSearch}
-                                className="pl-12 bg-white w-full"
+                                className="pl-12 bg-white"
                             />
                         </div>
                         
@@ -210,7 +210,7 @@ export default function Catalog() {
 
             {/* Sidebar - Mobile Drawer */}
             <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-                <SheetContent side="left" className="w-[280px] p-0">
+                <SheetContent side="left" className="w-[280px] bg-white p-0">
                     <div className="p-4 space-y-4">
                         <SheetHeader className="px-2">
                             <SheetTitle>Filtros</SheetTitle>
@@ -450,7 +450,7 @@ export default function Catalog() {
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         exit={{ opacity: 0 }}
-                                        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+                                        className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
                                     >
                                         {currentItems.map((vehicle) => (
                                             <motion.div

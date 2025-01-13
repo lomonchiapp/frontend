@@ -29,20 +29,22 @@ export function VehicleView() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-4">
-      <div>
+    <div className="flex flex-col h-[85vh] sm:h-auto sm:grid sm:grid-cols-2 gap-4 bg-white">
+      <div className="sticky top-0 z-10 bg-white">
         <ImageCarousel images={selectedVehicle?.images} />
+      </div>
+      
+      <div className="overflow-y-auto px-4 pb-4 flex-1">
         <VehicleDetails vehicle={selectedVehicle} />
         <Button 
-          className="w-full mt-10" 
+          className="w-full mt-4 mb-6" 
           onClick={handleOpenApplication}
         >
           Solicitar Financiamiento
         </Button>
-      </div>
-      <div>
+        
         <Tabs defaultValue="financing" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-2 sticky top-0 bg-white">
             <TabsTrigger value="financing">Financiamiento</TabsTrigger>
             <TabsTrigger value="specs">Especificaciones</TabsTrigger>
           </TabsList>
@@ -61,7 +63,7 @@ export function VehicleView() {
         open={showApplicationForm} 
         onOpenChange={setShowApplicationForm}
       >
-        <DialogContent className="bg-white max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-white max-w-2xl max-h-[90vh] w-[90vw] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Solicitud de Financiamiento</DialogTitle>
           </DialogHeader>

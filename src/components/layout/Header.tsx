@@ -45,7 +45,7 @@ export function Header() {
     <header className="px-4 lg:px-10 sticky top-0 z-30 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
-          <Link to="/" className="relative">
+          <Link to="/" className="relative z-10">
             <img 
               src="/logo.png" 
               alt="Logo" 

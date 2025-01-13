@@ -79,7 +79,7 @@ export function VehicleCard({
       transition={{ type: "spring", stiffness: 300 }}
     >
       <Card 
-        className="w-full max-w-64 mx-auto overflow-hidden shadow-lg 
+        className="w-full z-0 max-w-64 mx-auto overflow-hidden shadow-lg 
         transition-all duration-300 hover:shadow-2xl cursor-pointer 
         bg-gradient-to-br from-white to-gray-100 dark:from-gray-800
          dark:to-gray-900"
@@ -97,6 +97,9 @@ export function VehicleCard({
           ) : (
             <PlaceholderImage />
           )}
+          <Badge variant="outline" className="text-xs font-medium px-2 absolute top-2 left-2 bg-white py-1">
+              {cc} cc
+            </Badge>
           <Badge variant="secondary" className="text-xs font-semibold px-2 py-1 absolute top-2 right-2 z-10">
             {category?.name}
           </Badge>
@@ -111,9 +114,7 @@ export function VehicleCard({
             <span className="text-xl text-green-600 dark:text-green-400">
               {new Intl.NumberFormat('es-DO', { style: 'currency', currency: 'DOP' }).format(salePrice)}
             </span>
-            <Badge variant="outline" className="text-xs font-medium px-2 py-1">
-              {cc} cc
-            </Badge>
+            
           </div>
           <div className="flex justify-center items-center mt-4">
             <motion.button

@@ -22,6 +22,7 @@ import { EmptyResult } from './EmptyResult'
 import { LoadingSpinner } from '../LoadingSpinner'
 import { Vehicle } from '@/types/interfaces/vehicle'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 interface SearchResultProps {
   setOpenDialog: (open: boolean) => void
@@ -76,8 +77,13 @@ export function SearchResult({ setOpenDialog, openDialog, onClick }: SearchResul
   const { filteredVehicles, isSearchActive } = useVehicleFilter()
   const [itemsPerPage, setItemsPerPage] = React.useState(8)
   const [currentPage, setCurrentPage] = React.useState(1)
-  const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('grid')
+  const isMobile = useMediaQuery('(max-width: 640px)')
+  const [viewMode, setViewMode] = React.useState<'grid' | 'list'>(isMobile ? 'list' : 'grid')
   const [isLoading, setIsLoading] = React.useState(false)
+
+  React.useEffect(() => {
+    setViewMode(isMobile ? 'list' : 'grid')
+  }, [isMobile])
 
   // Reset page when filters change
   React.useEffect(() => {
