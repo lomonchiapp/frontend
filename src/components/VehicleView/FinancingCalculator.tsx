@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Slider } from "@/components/ui/slider"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -33,18 +33,51 @@ export function FinancingCalculator({ vehicle }: FinancingCalculatorProps) {
     setFinancingMonths 
   } = useNewAppState()
 
+  const [inputValue, setInputValue] = useState(initialDeposit.toString())
+
+  const gpsCharge = 7000
+  const interestRate = 0.03 // 3% mensual
+
   const calculateMonthlyPayment = () => {
     if (!vehicle) return 0
     const amountToFinance = vehicle.salePrice - initialDeposit
-    return amountToFinance / financingMonths
+    const totalInterest = amountToFinance * interestRate * financingMonths
+    const totalAmount = amountToFinance + totalInterest + gpsCharge
+    return totalAmount / financingMonths
+  }
+
+  const calculateTotalInterest = () => {
+    if (!vehicle) return 0
+    const amountToFinance = vehicle.salePrice - initialDeposit
+    return amountToFinance * interestRate * financingMonths
   }
 
   const monthlyPayment = calculateMonthlyPayment()
+  const totalInterest = calculateTotalInterest()
   const minInitDeposit = vehicle?.salePrice ? vehicle.salePrice * 0.3 : 0
 
-  const handleDepositChange = (value: number) => {
-    if (vehicle && value >= minInitDeposit && value <= vehicle.salePrice) {
+  // Actualizar el input cuando cambie initialDeposit (por el slider)
+  useEffect(() => {
+    setInputValue(initialDeposit.toString())
+  }, [initialDeposit])
+
+  const handleDepositChange = (value: number) => { 
+    if (vehicle && value >= minInitDeposit && value <= vehicle?.salePrice || 0) {
       setInitialDeposit(value)
+      setInputValue(value.toString())
+    }
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setInputValue(value) // Actualizar el input inmediatamente
+
+    const numValue = Number(value)
+    if (!isNaN(numValue) && vehicle) {
+      // Solo actualizar el depósito si el valor es válido
+      if (numValue >= minInitDeposit && numValue <= vehicle?.salePrice || 0) {
+        setInitialDeposit(numValue)
+      }
     }
   }
 
@@ -72,8 +105,20 @@ export function FinancingCalculator({ vehicle }: FinancingCalculatorProps) {
           />
           <Input
             type="number"
-            value={initialDeposit}
-            onChange={(e) => handleDepositChange(Number(e.target.value))}
+            id="deposit-input"
+            value={inputValue}
+            onChange={handleInputChange}
+            onBlur={() => {
+              const numValue = Number(inputValue)
+              if (isNaN(numValue) || numValue < minInitDeposit) {
+                handleDepositChange(minInitDeposit)
+              } else if (numValue > (vehicle?.salePrice || 0)) {
+                handleDepositChange(vehicle?.salePrice || 0)
+              } else {
+                handleDepositChange(numValue)
+              }
+            }}
+            className="mt-2"
           />
         </div>
         <div className="space-y-4">
@@ -104,12 +149,16 @@ export function FinancingCalculator({ vehicle }: FinancingCalculatorProps) {
         </TableHeader>
         <TableBody>
           <TableRow>
-            <TableCell>Precio de Venta</TableCell>
-            <TableCell className="text-right">RD$ {vehicle?.salePrice?.toLocaleString() || 0}</TableCell>
+            <TableCell className="font-medium">Precio del Vehículo</TableCell>
+            <TableCell className="text-right font-medium">
+              RD$ {vehicle?.salePrice?.toLocaleString() || 0}
+            </TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Depósito Inicial</TableCell>
-            <TableCell className="text-right">RD$ {initialDeposit.toLocaleString()}</TableCell>
+            <TableCell className="text-right">
+              RD$ {initialDeposit.toLocaleString()}
+            </TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Monto a Financiar</TableCell>
@@ -118,8 +167,23 @@ export function FinancingCalculator({ vehicle }: FinancingCalculatorProps) {
             </TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>Pago Mensual</TableCell>
+            <TableCell>Interés Total ({financingMonths} meses)</TableCell>
             <TableCell className="text-right">
+              RD$ {totalInterest.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              })}
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Cargo GPS</TableCell>
+            <TableCell className="text-right">
+              RD$ {gpsCharge.toLocaleString()}
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className="font-medium">Pago Mensual</TableCell>
+            <TableCell className="text-right font-medium">
               RD$ {monthlyPayment.toLocaleString(undefined, {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
