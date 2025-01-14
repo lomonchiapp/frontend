@@ -1,31 +1,32 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Vehicle } from "@/types"
 import { motion } from "framer-motion"
-import { Eye } from 'lucide-react'
 import { PlaceholderImage } from './PlaceholderImage'
-import { Dialog, DialogContent } from "@/components/ui/dialog"
-import { VehicleView } from '@/components/VehicleView'; // Import VehicleView component
 
 interface VehicleCardProps extends Vehicle {
   onClick: () => void
-  isDialogOpen: boolean;
-  compact?: boolean;
+  isDialogOpen: boolean
+  compact?: boolean
   setIsDialogOpen: (open: boolean) => void
+  displayPrice: number
+  secondaryPrice: number
+  showInitialPrice: boolean
 }
 
 export function VehicleCard({ 
   name, 
-  salePrice, 
   category, 
   cc, 
   images,
   brand,
-  isDialogOpen,
   setIsDialogOpen,
   onClick,
-  compact = false
+  compact = false,
+  displayPrice,
+  secondaryPrice,
+  showInitialPrice
 }: VehicleCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
@@ -47,6 +48,11 @@ export function VehicleCard({
     }
   };
 
+  const handleOnClick = () => {
+    setIsDialogOpen(true)
+    onClick()
+  }
+
   const handleMouseLeave = () => {
     if (intervalId) {
       clearInterval(intervalId);
@@ -57,7 +63,7 @@ export function VehicleCard({
   
   if (compact) {
     return (
-      <div className="flex items-center space-x-4" onClick={onClick}>
+      <div className="flex items-center space-x-4" onClick={handleOnClick}>
         <img
           src={images?.[0]}
           alt={name}
@@ -67,7 +73,7 @@ export function VehicleCard({
           <h3 className="font-semibold">{name}</h3>
           <p className="text-sm text-gray-500">{brand?.name}</p>
           <p className="text-sm text-gray-500">{category?.name}</p>
-          <p className="font-bold mt-1">${salePrice.toLocaleString()}</p>
+          <p className="font-bold mt-1">${secondaryPrice.toLocaleString()}</p>
         </div>
       </div>
     )
@@ -83,7 +89,7 @@ export function VehicleCard({
         transition-all duration-300 hover:shadow-2xl cursor-pointer 
         bg-gradient-to-br from-white to-gray-100 dark:from-gray-800
          dark:to-gray-900"
-        onClick={onClick}
+        onClick={handleOnClick}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
@@ -110,22 +116,19 @@ export function VehicleCard({
             <h2 className="text-xl text-gray-800 dark:text-gray-100 truncate">{name}</h2>
           </div>
 
-          <div className="flex justify-between items-center mb-4">
-            <span className="text-xl text-green-600 dark:text-green-400">
-              {new Intl.NumberFormat('es-DO', { style: 'currency', currency: 'DOP' }).format(salePrice)}
-            </span>
-            
-          </div>
-          <div className="flex justify-center items-center mt-4">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center justify-center px-4 py-2 bg-[#38367D] text-white rounded-lg font-semibold text-sm transition-colors duration-300 hover:bg-[#38367D]"
-              onClick={() => setIsDialogOpen(true)} // Added onClick handler
-            >
-              <Eye className="w-4 h-4 mr-2" />
-              Ver detalles
-            </motion.button>
+          <div className="space-y-1">
+            <p className="text-2xl font-bold text-green-600">
+              RD$ {displayPrice?.toLocaleString()}
+            </p>
+
+            <div className="mt-2 pt-2 border-t">
+              <p className="text-sm text-gray-600">
+                {showInitialPrice ? "Precio total" : "Depósito mínimo"}:
+                <span className="ml-1 font-medium">
+                  RD$ {secondaryPrice?.toLocaleString()}
+                </span>
+              </p>
+            </div>
           </div>
         </CardContent>
       </Card>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { VehicleCard } from '@/components/VehicleCard'
 import { useVehicleFilter } from '@/hooks/context/global/useVehicleFilter'
 import { 
@@ -23,6 +23,8 @@ import { LoadingSpinner } from '../LoadingSpinner'
 import { Vehicle } from '@/types/interfaces/vehicle'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
 
 interface SearchResultProps {
   setOpenDialog: (open: boolean) => void
@@ -80,6 +82,7 @@ export function SearchResult({ setOpenDialog, openDialog, onClick }: SearchResul
   const isMobile = useMediaQuery('(max-width: 640px)')
   const [viewMode, setViewMode] = React.useState<'grid' | 'list'>(isMobile ? 'list' : 'grid')
   const [isLoading, setIsLoading] = React.useState(false)
+  const [showInitialPrice, setShowInitialPrice] = useState(false)
 
   React.useEffect(() => {
     setViewMode(isMobile ? 'list' : 'grid')
@@ -105,6 +108,22 @@ export function SearchResult({ setOpenDialog, openDialog, onClick }: SearchResul
     setCurrentPage(1)
   }
 
+  const getDisplayPrice = (vehicle: Vehicle) => {
+    if (!vehicle) return 0
+    if (showInitialPrice) {
+      return vehicle.initPrice || Math.round(vehicle.salePrice * 0.3)
+    }
+    return vehicle.salePrice
+  }
+
+  const getSecondaryPrice = (vehicle: Vehicle) => {
+    if (!vehicle) return 0
+    if (showInitialPrice) {
+      return vehicle.salePrice
+    }
+    return vehicle.initPrice || Math.round(vehicle.salePrice * 0.3)
+  }
+
   if (isLoading) {
     return <LoadingSpinner />
   }
@@ -120,9 +139,21 @@ export function SearchResult({ setOpenDialog, openDialog, onClick }: SearchResul
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <p className="text-md bg-white p-4 rounded-lg text-gray-500">
-          {filteredVehicles.length} vehículos encontrados
-        </p>
+        <div className="flex items-center gap-4">
+          <p className="text-md bg-white p-4 rounded-lg text-gray-500">
+            {filteredVehicles.length} vehículos encontrados
+          </p>
+          <div className="flex items-center gap-2 bg-white p-4 rounded-lg">
+            <Switch
+              id="search-price-mode"
+              checked={showInitialPrice}
+              onCheckedChange={setShowInitialPrice}
+            />
+            <Label htmlFor="search-price-mode" className="text-sm text-gray-600">
+              {showInitialPrice ? "Mostrar precio total" : "Mostrar precio inicial"}
+            </Label>
+          </div>
+        </div>
         <div className="flex gap-2 bg-white p-4 rounded-lg">
           <Button
             variant={viewMode === 'grid' ? 'default' : 'outline'}
@@ -164,6 +195,9 @@ export function SearchResult({ setOpenDialog, openDialog, onClick }: SearchResul
               >
                 <VehicleCard
                   {...vehicle}
+                  displayPrice={getDisplayPrice(vehicle)}
+                  secondaryPrice={getSecondaryPrice(vehicle)}
+                  showInitialPrice={showInitialPrice}
                   isDialogOpen={openDialog}
                   setIsDialogOpen={setOpenDialog}
                   onClick={() => onClick(vehicle)}

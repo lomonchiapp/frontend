@@ -42,17 +42,14 @@ export const useVehicleFilter = create<VehicleFilterState>((set, get) => ({
 
     updateFilters: () => {
         const state = get()
-        const { vehicles } = useGlobalState.getState()
+        const { vehicles, myInit } = useGlobalState.getState()
         
         if (!vehicles) return
 
         const isActive = state.searchText.trim() !== '' || 
             state.selectedBrands.length > 0 || 
             state.selectedCategories.length > 0 ||
-            state.minInitPrice > 0 || 
-            state.maxInitPrice > 0 ||
-            state.minSalePrice > 0 || 
-            state.maxSalePrice > 0
+            myInit > 0
 
         const filtered = vehicles.filter(vehicle => {
             if (!vehicle) return false
@@ -77,16 +74,10 @@ export const useVehicleFilter = create<VehicleFilterState>((set, get) => ({
                     vehicle.category?.id === selectedCategory.id
                 )
 
-            const matchesInitPrice = 
-                (state.minInitPrice === 0 || (vehicle.initPrice || 0) >= state.minInitPrice) &&
-                (state.maxInitPrice === 0 || (vehicle.initPrice || 0) <= state.maxInitPrice)
+            const requiredInitial = vehicle.initPrice || Math.round(vehicle.salePrice * 0.3)
+            const matchesInitial = myInit === 0 || requiredInitial <= myInit
 
-            const matchesSalePrice = 
-                (state.minSalePrice === 0 || (vehicle.salePrice || 0) >= state.minSalePrice) &&
-                (state.maxSalePrice === 0 || (vehicle.salePrice || 0) <= state.maxSalePrice)
-
-            return matchesSearch && matchesBrand && matchesCategory && 
-                matchesInitPrice && matchesSalePrice
+            return matchesSearch && matchesBrand && matchesCategory && matchesInitial
         })
 
         set({ 

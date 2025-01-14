@@ -12,6 +12,8 @@ interface GlobalState {
     searchText: string;
     filteredVehicles: Vehicle[];
     loading: boolean;
+    myInit: number;
+    setMyInit: (myInit: number) => void;
     setVehicles: (vehicles: Vehicle[]) => void;
     setFilteredVehicles: (filteredVehicles: Vehicle[]) => void;
     setSelectedVehicle: (vehicle: Vehicle | null) => void;
@@ -29,6 +31,8 @@ export const useGlobalState = create<GlobalState>((set) => ({
     categories:[],
     brands:[],
     selectedVehicle: null,
+    myInit: 0,
+    setMyInit: (myInit: number) => set({ myInit }),
     setFilteredVehicles: (filteredVehicles: Vehicle[]) => set({ filteredVehicles }),
     setVehicles: (vehicles: Vehicle[]) => set({ vehicles }),  
     setCategories: (categories: VehicleCategory[]) => set({ categories }),

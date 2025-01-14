@@ -4,7 +4,7 @@ import { useVehicleFilter } from '@/hooks/context/global/useVehicleFilter'
 import { Input } from '@/components/ui/input'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
-import { Search, X } from 'lucide-react'
+import { Search, X, ChevronRight, ChevronLeft } from 'lucide-react'
 import { Brand, Vehicle, VehicleCategory } from '@/types'
 import { VehicleCard } from '@/components/VehicleCard'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -27,75 +27,12 @@ import {
 } from "@/components/ui/select"
 import { LayoutGrid, List } from "lucide-react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-
-// Componente VehicleListItem mejorado
-const VehicleListItem = ({ vehicle, onClick }: { vehicle: Vehicle, onClick: () => void }) => (
-    <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        className="flex items-center gap-4 p-4 bg-white rounded-lg shadow hover:shadow-md transition-all cursor-pointer"
-        onClick={onClick}
-    >
-        <div className="w-32 h-24 relative rounded-md overflow-hidden">
-            {vehicle.images && vehicle.images.length > 0 ? (
-                <img 
-                    src={vehicle.images[0]} 
-                    alt={vehicle.name} 
-                    className="w-full h-full object-cover"
-                />
-            ) : (
-                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                    <span className="text-gray-400 text-sm">Sin imagen</span>
-                </div>
-            )}
-        </div>
-        <div className="flex-1 min-w-0">
-            <h3 className="text-lg font-semibold truncate">{vehicle.name}</h3>
-            <div className="flex items-center gap-2 text-sm text-gray-500">
-                {vehicle.brand?.logo && (
-                    <img 
-                        src={vehicle.brand.logo} 
-                        alt={vehicle.brand.name} 
-                        className="w-4 h-4 object-contain"
-                    />
-                )}
-                <span>{vehicle.brand?.name || 'Sin marca'}</span>
-                <span>•</span>
-                <span>{vehicle.category?.name || 'Sin categoría'}</span>
-            </div>
-            <p className="text-sm text-gray-500 mt-1">
-                {vehicle.description?.slice(0, 100)}...
-            </p>
-        </div>
-        <div className="text-right flex flex-col items-end justify-between h-full">
-            <div>
-                <p className="text-2xl font-bold text-brand-red">
-                    ${vehicle.salePrice.toLocaleString()}
-                </p>
-                {vehicle.initPrice && vehicle.initPrice > vehicle.salePrice && (
-                    <p className="text-sm text-gray-500 line-through">
-                        ${vehicle.initPrice.toLocaleString()}
-                    </p>
-                )}
-            </div>
-            <Button
-                variant="outline"
-                size="sm"
-                className="mt-2"
-                onClick={(e) => {
-                    e.stopPropagation()
-                    onClick()
-                }}
-            >
-                Ver detalles
-            </Button>
-        </div>
-    </motion.div>
-)
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
+import { NumericFormat } from 'react-number-format'
 
 export default function Catalog() {
-    const { brands, categories, selectedVehicle, setSelectedVehicle } = useGlobalState()
+    const { brands, categories, selectedVehicle, setSelectedVehicle, myInit, setMyInit } = useGlobalState()
     const {
         filteredVehicles,
         selectedBrands,
@@ -114,6 +51,8 @@ export default function Catalog() {
     const [currentPage, setCurrentPage] = React.useState(1)
     const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('grid')
     const [sidebarOpen, setSidebarOpen] = useState(false)
+    const [showInitialPrice, setShowInitialPrice] = useState(false)
+    const [showInitialInput, setShowInitialInput] = useState(true)
 
     // Actualizar filtros cuando cambie la selección
     useEffect(() => {
@@ -175,9 +114,172 @@ export default function Catalog() {
         setCurrentPage(1)
     }
 
+    const getDisplayPrice = (vehicle: Vehicle) => {
+        if (!vehicle) return 0
+        if (showInitialPrice) {
+            return vehicle.initPrice || Math.round(vehicle.salePrice * 0.3)
+        }
+        return vehicle.salePrice
+    }
+
+    const getSecondaryPrice = (vehicle: Vehicle) => {
+        if (!vehicle) return 0
+        if (showInitialPrice) {
+            return vehicle.salePrice
+        }
+        return vehicle.initPrice || Math.round(vehicle.salePrice * 0.3)
+    }
+
+    const VehicleListItem = ({ vehicle, onClick }: { vehicle: Vehicle, onClick: () => void }) => (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="flex items-center gap-4 p-4 bg-white rounded-lg shadow hover:shadow-md transition-all cursor-pointer"
+            onClick={onClick}
+        >
+            <div className="w-32 h-24 relative rounded-md overflow-hidden">
+                {vehicle.images && vehicle.images.length > 0 ? (
+                    <img 
+                        src={vehicle.images[0]} 
+                        alt={vehicle.name} 
+                        className="w-full h-full object-cover"
+                    />
+                ) : (
+                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                        <span className="text-gray-400 text-sm">Sin imagen</span>
+                    </div>
+                )}
+            </div>
+            <div className="flex-1 min-w-0">
+                <h3 className="text-lg font-semibold truncate">{vehicle.name}</h3>
+                <div className="flex items-center gap-2 text-sm text-gray-500">
+                    {vehicle.brand?.logo && (
+                        <img 
+                            src={vehicle.brand.logo} 
+                            alt={vehicle.brand.name} 
+                            className="w-4 h-4 object-contain"
+                        />
+                    )}
+                    <span>{vehicle.brand?.name || 'Sin marca'}</span>
+                    <span>•</span>
+                    <span>{vehicle.category?.name || 'Sin categoría'}</span>
+                </div>
+                <p className="text-sm text-gray-500 mt-1">
+                    {vehicle.description?.slice(0, 100)}...
+                </p>
+            </div>
+            <div className="text-right flex flex-col items-end justify-between h-full">
+                <div>
+                    <p className="text-2xl font-bold text-brand-red">
+                        RD$ {getDisplayPrice(vehicle).toLocaleString()}
+                    </p>
+                    {showInitialPrice && (
+                        <p className="text-sm text-gray-500">
+                            Precio inicial / Depósito mínimo
+                        </p>
+                    )}
+                </div>
+                <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-2"
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        onClick()
+                    }}
+                >
+                    Ver detalles
+                </Button>
+            </div>
+        </motion.div>
+    )
+
+    const handleInitialChange = (values: any) => {
+        const value = values.floatValue || 0
+        setMyInit(value)
+        updateFilters()
+    }
+
     return (
         <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100 overflow-hidden">
-            {/* Mobile Header */}
+            {/* Floating myInit Input for Mobile */}
+            <div className="lg:hidden fixed bottom-20 right-0 z-50 flex items-start">
+                <AnimatePresence mode="wait">
+                    {showInitialInput ? (
+                        <motion.div
+                            initial={{ x: "100%" }}
+                            animate={{ x: 0 }}
+                            exit={{ x: "100%" }}
+                            className="flex items-start"
+                        >
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => setShowInitialInput(false)}
+                                className="bg-[#E10F18] text-yellow-200 rounded-full w-8 h-8 mt-10 flex items-center justify-center shadow-lg -mr-2 z-10"
+                            >
+                                <ChevronRight className="h-12 w-12" />
+                            </Button>
+                            <div className="w-[160px] bg-[#38367D] shadow-lg rounded-l-lg">
+                                <div className="p-2 space-y-3">
+                                    {/* Switch de precio inicial */}
+                                    <div className="flex items-center gap-2">
+                                        <Switch
+                                            id="mobile-price-mode"
+                                            checked={showInitialPrice}
+                                            onCheckedChange={setShowInitialPrice}
+                                            className="data-[state=checked]:bg-[#E10F18]"
+                                        />
+                                        <Label htmlFor="mobile-price-mode" className="text-[10px] text-yellow-200">
+                                            {showInitialPrice ? "Mostrar precio total" : "Mostrar precio inicial"}
+                                        </Label>
+                                    </div>
+
+                                    {/* Separador */}
+                                    <div className="border-t border-white/10" />
+
+                                    {/* Input de inicial disponible */}
+                                    <div>
+                                        <Label className="text-xs font-semibold text-yellow-200 mb-1 block">
+                                            Inicial disponible
+                                        </Label>
+                                        <NumericFormat
+                                            value={myInit}
+                                            onValueChange={handleInitialChange}
+                                            thousandSeparator=","
+                                            decimalSeparator="."
+                                            prefix="RD$ "
+                                            className="flex bg-white/20 text-white h-8 w-full rounded-md border border-input px-2 py-1 text-xs ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                            placeholder="RD$ 0"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            initial={{ x: "100%" }}
+                            animate={{ x: 0 }}
+                            exit={{ x: "100%" }}
+                        >
+                            <Button
+                                variant="default"
+                                size="sm"
+                                onClick={() => setShowInitialInput(true)}
+                                className="bg-[#38367D] text-yellow-200 rounded-l-lg flex items-center gap-2 pr-4 pl-3 py-2"
+                            >
+                                <div className="bg-yellow-200/20 rounded-full p-1">
+                                    <ChevronLeft className="h-3 w-3" />
+                                </div>
+                                <span className="text-xs">Inicial</span>
+                            </Button>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+
+            {/* Mobile Header - ajustar el top para dar espacio al nuevo div */}
             <div className="lg:hidden fixed top-16 left-0 right-0 z-20 bg-[#38367D] shadow-md p-4">
                 <div className="flex items-center w-full gap-2">
                     <div className="grid grid-cols-5 relative flex-1">
@@ -334,6 +436,23 @@ export default function Catalog() {
                                 </Button>
                             ))}
                         </div>
+                        <div className="p-4 border-t border-white/10">
+                            <Label className="text-lg font-semibold text-yellow-200 mb-2 block">
+                                ¿Con cuánto inicial cuentas?
+                            </Label>
+                            <NumericFormat
+                                value={myInit}
+                                onValueChange={handleInitialChange}
+                                thousandSeparator=","
+                                decimalSeparator="."
+                                prefix="RD$ "
+                                className="flex bg-white/20 text-white h-10 w-full rounded-md border border-input px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                placeholder="RD$ 0"
+                            />
+                            <p className="text-xs text-yellow-200/80 mt-2">
+                                Solo verás vehículos que puedas comprar con este inicial
+                            </p>
+                        </div>
                     </div>
                     
                     {/* Sidebar Footer */}
@@ -347,8 +466,8 @@ export default function Catalog() {
                 </div>
             </div>
 
-            {/* Main Content */}
-            <div className="pt-16 lg:pl-64 flex-1 lg:pt-0 pb-24">
+            {/* Main Content - ajustar el padding top para móvil */}
+            <div className="pt-16 lg:pt-0 lg:pl-64 flex-1 pb-24">
                 {/* Desktop Top Bar */}
                 <div className="hidden lg:block fixed top-16 right-0 left-64 z-20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                     <div className="p-4 space-y-4">
@@ -422,9 +541,23 @@ export default function Catalog() {
                     ) : (
                         <div className="space-y-6">
                             <div className="flex justify-between items-center">
-                                <p className="text-md bg-white p-4 rounded-lg text-gray-500">
-                                    {filteredVehicles.length} vehículos encontrados
-                                </p>
+                                <div className="flex items-center gap-4">
+                                    <p className="text-md bg-white p-4 rounded-lg text-gray-500">
+                                        {filteredVehicles.length} vehículos encontrados
+                                    </p>
+                                    <div className="hidden lg:flex items-center gap-2 bg-white p-4 rounded-lg">
+                                        <div className="flex items-center gap-2">
+                                            <Switch
+                                                id="price-mode"
+                                                checked={showInitialPrice}
+                                                onCheckedChange={setShowInitialPrice}
+                                            />
+                                            <Label htmlFor="price-mode" className="text-sm text-gray-600">
+                                                {showInitialPrice ? "Mostrar precio total" : "Mostrar precio inicial"}
+                                            </Label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div className="flex gap-2 bg-white p-4 rounded-lg">
                                     <Button
                                         variant={viewMode === 'grid' ? 'default' : 'outline'}
@@ -466,6 +599,9 @@ export default function Catalog() {
                                             >
                                                 <VehicleCard
                                                     {...vehicle}
+                                                    displayPrice={getDisplayPrice(vehicle)}
+                                                    secondaryPrice={getSecondaryPrice(vehicle)}
+                                                    showInitialPrice={showInitialPrice}
                                                     isDialogOpen={dialogOpen}
                                                     setIsDialogOpen={setDialogOpen}
                                                     onClick={() => handleVehicleClick(vehicle)}

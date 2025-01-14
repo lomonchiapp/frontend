@@ -6,6 +6,8 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle } from 'lucide-react'
 import { Vehicle } from '@/types'
 import { useNavigate } from 'react-router-dom'
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
 
 interface FeaturedVehiclesProps {
   setIsDialogOpen: (open: boolean) => void
@@ -17,6 +19,7 @@ export function FeaturedVehicles({ setIsDialogOpen, isDialogOpen, onClick }: Fea
   const { vehicles, fetchVehicles } = useGlobalState()
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [showInitialPrice, setShowInitialPrice] = useState(false)
   const navigate = useNavigate()
   useEffect(() => {
     const loadVehicles = async () => {
@@ -61,15 +64,45 @@ export function FeaturedVehicles({ setIsDialogOpen, isDialogOpen, onClick }: Fea
 
   const featuredVehicles = vehicles.slice(0, 4)
 
+  const getDisplayPrice = (vehicle: Vehicle) => {
+    if (!vehicle) return 0
+    if (showInitialPrice) {
+      return vehicle.initPrice || Math.round(vehicle.salePrice * 0.3)
+    }
+    return vehicle.salePrice
+  }
+
+  const getSecondaryPrice = (vehicle: Vehicle) => {
+    if (!vehicle) return 0
+    if (showInitialPrice) {
+      return vehicle.salePrice
+    }
+    return vehicle.initPrice || Math.round(vehicle.salePrice * 0.3)
+  }
 
   return (
     <div className="pt-9 bg-white rounded-lg shadow-lg mt-10 pb-9">
-      <h2 className="text-3xl text-gray-600 text-center mb-8">Vehículos Destacados</h2>
+      <div className="flex justify-between items-center px-12 mb-8">
+        <h2 className="text-3xl text-gray-600">Vehículos Destacados</h2>
+        <div className="flex items-center gap-2">
+          <Switch
+            id="featured-price-mode"
+            checked={showInitialPrice}
+            onCheckedChange={setShowInitialPrice}
+          />
+          <Label htmlFor="featured-price-mode" className="text-sm text-gray-600">
+            {showInitialPrice ? "Mostrar precio total" : "Mostrar precio inicial"}
+          </Label>
+        </div>
+      </div>
       <div className="grid grid-cols-1 px-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {featuredVehicles.map((vehicle) => (
           <VehicleCard
             key={vehicle.id}
             {...vehicle}
+            displayPrice={getDisplayPrice(vehicle)}
+            secondaryPrice={getSecondaryPrice(vehicle)}
+            showInitialPrice={showInitialPrice}
             isDialogOpen={isDialogOpen}
             setIsDialogOpen={setIsDialogOpen}
             onClick={() => onClick(vehicle)}

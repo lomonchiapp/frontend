@@ -21,29 +21,55 @@ export function VehicleView() {
   }
 
   return (
-    <div className="flex flex-col gap-4 bg-white">
-      <div className="flex flex-col lg:flex-row gap-6">
-        {/* Columna izquierda: Imagen y detalles */}
-        <div className="flex-1 space-y-6">
-          <div className="sm:max-h-[600px]">
+    <div className="flex flex-col lg:flex-row">
+      {/* Columna izquierda: Imagen, detalles y botón */}
+      <div className="flex-1 flex flex-col h-full">
+        {/* Contenido fijo superior */}
+        <div className="flex-shrink-0">
+          {/* Imagen */}
+          <div className="w-full h-[40vh] lg:h-[50vh]">
             <ImageCarousel images={selectedVehicle?.images} />
           </div>
-          <VehicleDetails vehicle={selectedVehicle} />
-          <Button 
-            className="w-full" 
-            onClick={handleOpenApplication}
-          >
-            Solicitar Financiamiento
-          </Button>
+          
+          {/* Botón sticky - visible en móvil */}
+          <div className="lg:hidden sticky top-0 z-10 bg-white border-b shadow-sm">
+            <div className="p-4">
+              <Button 
+                className="w-full" 
+                onClick={handleOpenApplication}
+              >
+                Solicitar Financiamiento
+              </Button>
+            </div>
+          </div>
         </div>
 
-        {/* Columna derecha: Tabs de financiamiento y especificaciones */}
-        <div className="flex-1">
-          <Tabs defaultValue="financing" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="financing">Financiamiento</TabsTrigger>
-              <TabsTrigger value="specs">Especificaciones</TabsTrigger>
-            </TabsList>
+        {/* Contenido scrolleable */}
+        <div className="flex-1 overflow-y-auto">
+          <div className="p-6">
+            <VehicleDetails vehicle={selectedVehicle} />
+            
+            {/* Botón - visible en desktop */}
+            <div className="hidden lg:block mt-6">
+              <Button 
+                className="w-full" 
+                onClick={handleOpenApplication}
+              >
+                Solicitar Financiamiento
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Columna derecha: Tabs */}
+      <div className="lg:w-[45%] lg:h-full lg:overflow-y-auto">
+        <Tabs defaultValue="financing" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 sticky top-0 bg-white z-10">
+            <TabsTrigger value="financing">Financiamiento</TabsTrigger>
+            <TabsTrigger value="specs">Especificaciones</TabsTrigger>
+          </TabsList>
+          <div className="p-6">
             <TabsContent value="financing">
               <FinancingCalculator 
                 vehicle={selectedVehicle} 
@@ -52,8 +78,8 @@ export function VehicleView() {
             <TabsContent value="specs">
               <VehicleSpecs vehicle={selectedVehicle} />
             </TabsContent>
-          </Tabs>
-        </div>
+          </div>
+        </Tabs>
       </div>
 
       <Dialog 

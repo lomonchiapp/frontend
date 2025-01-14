@@ -20,6 +20,7 @@ import {
 import { motion } from "framer-motion"
 import { Vehicle } from "@/types"
 import { useNewAppState } from '@/hooks/context/global/useNewAppState'
+import { NumericFormat } from "react-number-format"
 
 interface FinancingCalculatorProps {
   vehicle: Vehicle | null
@@ -34,9 +35,12 @@ export function FinancingCalculator({ vehicle }: FinancingCalculatorProps) {
   } = useNewAppState()
 
   const [inputValue, setInputValue] = useState(initialDeposit.toString())
-
+  const [minInitDeposit, setMinInitDeposit] = useState(vehicle?.initPrice || 0)
   const gpsCharge = 7000
   const interestRate = 0.03 // 3% mensual
+
+  const MIN_MONTHS = 1
+  const MAX_MONTHS = 18
 
   const calculateMonthlyPayment = () => {
     if (!vehicle) return 0
@@ -46,9 +50,11 @@ export function FinancingCalculator({ vehicle }: FinancingCalculatorProps) {
     return totalAmount / financingMonths
   }
 
+  useEffect(() => {
+    setMinInitDeposit(vehicle?.salePrice ? vehicle.salePrice * 0.3 : 0)
+  }, [vehicle])
 
   const monthlyPayment = calculateMonthlyPayment()
-  const minInitDeposit = vehicle?.salePrice ? vehicle.salePrice * 0.3 : 0
 
   // Actualizar el input cuando cambie initialDeposit (por el slider)
   useEffect(() => {
@@ -75,8 +81,21 @@ export function FinancingCalculator({ vehicle }: FinancingCalculatorProps) {
     }
   }
 
-  const handleTimeChange = (value: string) => {
-    setFinancingMonths(parseInt(value))
+  const handleMonthsChange = (value: number[]) => {
+    setFinancingMonths(value[0])
+  }
+
+  const handleMonthsInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value)
+    if (!isNaN(value)) {
+      if (value < MIN_MONTHS) {
+        setFinancingMonths(MIN_MONTHS)
+      } else if (value > MAX_MONTHS) {
+        setFinancingMonths(MAX_MONTHS)
+      } else {
+        setFinancingMonths(value)
+      }
+    }
   }
 
   return (
@@ -86,21 +105,23 @@ export function FinancingCalculator({ vehicle }: FinancingCalculatorProps) {
       transition={{ duration: 0.5, delay: 0.4 }}
       className="space-y-6"
     >
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4 border-gray-400">
         <div className="space-y-4">
           <Label htmlFor="init-deposit">Depósito Inicial</Label>
           <Slider
             id="init-deposit"
             min={minInitDeposit}
-            max={vehicle?.salePrice || 0}
+            max={vehicle?.salePrice}
             step={100}
             value={[initialDeposit]}
             onValueChange={(value) => handleDepositChange(value[0])}
           />
-          <Input
-            type="number"
+          <NumericFormat
             id="deposit-input"
             value={inputValue}
+            prefix="RD$"
+            thousandSeparator=","
+            decimalSeparator="."
             onChange={handleInputChange}
             onBlur={() => {
               const numValue = Number(inputValue)
@@ -112,25 +133,40 @@ export function FinancingCalculator({ vehicle }: FinancingCalculatorProps) {
                 handleDepositChange(numValue)
               }
             }}
-            className="mt-2"
+            className="mt-2 w-40 border-gray-400 rounded-md border-input h-9 px-3 py-1 border"
           />
         </div>
         <div className="space-y-4">
           <Label htmlFor="financing-time">Tiempo de Financiamiento</Label>
-          <Select value={financingMonths.toString()} onValueChange={handleTimeChange}>
-            <SelectTrigger>
-              <SelectValue placeholder="Seleccione los meses" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="6">6 meses</SelectItem>
-              <SelectItem value="12">12 meses</SelectItem>
-              <SelectItem value="18">18 meses</SelectItem>
-              <SelectItem value="24">24 meses</SelectItem>
-              <SelectItem value="36">36 meses</SelectItem>
-              <SelectItem value="48">48 meses</SelectItem>
-              <SelectItem value="60">60 meses</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="flex-1">
+              <Slider
+                id="months-slider"
+                min={MIN_MONTHS}
+                max={MAX_MONTHS}
+                step={1}
+                value={[financingMonths]}
+                onValueChange={handleMonthsChange}
+              />
+            </div>
+            
+          
+          <div className="flex items-center gap-4">
+            <div className="relative w-40">
+              <NumericFormat
+                id="financing-time"
+                value={financingMonths}
+                thousandSeparator=","
+                decimalSeparator="."
+                min={MIN_MONTHS}
+                max={MAX_MONTHS}
+                onChange={handleMonthsInputChange}
+                className="w-full border-gray-400 rounded-md border-input h-9 px-3 py-1 border pr-14"
+              />
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
+                {financingMonths === 1 ? "mes" : "meses"}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 

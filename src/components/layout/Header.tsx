@@ -5,6 +5,8 @@ import { useThemeState } from '@/context/useThemeState'
 import { AboutDialog } from '../AboutUs/AboutDialog'
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
+const APP_URL = 'https://app.orientalramirez.com'
+
 function NavLinks() {
   const { setAbout } = useThemeState()
   return (
@@ -41,6 +43,10 @@ function NavLinks() {
 export function Header() {
   const { about, setAbout } = useThemeState()
 
+  const handleLogin = () => {
+    window.location.href = APP_URL
+  }
+
   return (
     <header className="px-4 lg:px-10 sticky top-0 z-30 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center justify-between">
@@ -62,6 +68,7 @@ export function Header() {
             variant="ghost" 
             size="sm" 
             className="hidden md:flex items-center gap-2"
+            onClick={handleLogin}
           >
             <LogIn className="h-4 w-4" />
             <span className="hidden sm:inline">Acceder</span>
@@ -87,7 +94,12 @@ export function Header() {
               <nav className="flex flex-col gap-4 mt-8">
                 <NavLinks />
                 <div className="flex flex-col gap-2 mt-4">
-                  <Button variant="outline" size="sm" className="justify-start">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="justify-start"
+                    onClick={handleLogin}
+                  >
                     <LogIn className="h-4 w-4 mr-2" />
                     Acceder
                   </Button>
