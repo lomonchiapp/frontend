@@ -18,7 +18,7 @@ export function VehicleDialog({ openDialog, setOpenDialog, children }: VehicleDi
   return (
     <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogContent className={cn(
-        "bg-white rounded-lg p-5 max-h-[90vh] min-w-[70vw] pt-12",
+        "bg-white rounded-lg p-5 max-h-[90vh] min-w-[70vw] pt-10",
         "w-[95vw] overflow-y-auto sm:w-[90vw]  md:w-[85vw] lg:w-[75vw] xl:w-[1200px]",
       )}>
         <button
