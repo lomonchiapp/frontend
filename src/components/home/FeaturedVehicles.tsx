@@ -110,7 +110,7 @@ export function FeaturedVehicles({ setIsDialogOpen, isDialogOpen, onClick }: Fea
         ))}
       </div>
       <div className="mt-8 text-center">
-        <Button variant="outline" size="lg" onClick={() => navigate('/catalog')}>
+        <Button variant="outline" size="lg" onClick={() => navigate('/catalogo')}>
           Ver todos los vehículos
         </Button>
       </div>
