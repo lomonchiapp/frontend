@@ -8,6 +8,7 @@ import { Vehicle } from '@/types'
 import { useNavigate } from 'react-router-dom'
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
+import { DollarSign, Tag } from 'lucide-react'
 
 interface FeaturedVehiclesProps {
   setIsDialogOpen: (open: boolean) => void
@@ -50,12 +51,12 @@ export function FeaturedVehicles({ setIsDialogOpen, isDialogOpen, onClick }: Fea
 
   if (loading) {
     return (
-      <div className="grid px-24 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid px-[5%] grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[2%]">
         {[...Array(8)].map((_, index) => (
           <div key={index} className="animate-pulse">
-            <div className="bg-gray-300 h-48 rounded-lg mb-2"></div>
-            <div className="bg-gray-300 h-4 w-3/4 rounded mb-2"></div>
-            <div className="bg-gray-300 h-4 w-1/2 rounded"></div>
+            <div className="bg-gray-300 h-[12rem] rounded-lg mb-[2%]"></div>
+            <div className="bg-gray-300 h-[1rem] w-[75%] rounded mb-[2%]"></div>
+            <div className="bg-gray-300 h-[1rem] w-[50%] rounded"></div>
           </div>
         ))}
       </div>
@@ -81,21 +82,37 @@ export function FeaturedVehicles({ setIsDialogOpen, isDialogOpen, onClick }: Fea
   }
 
   return (
-    <div className="pt-9 bg-white rounded-lg shadow-lg mt-10 pb-9">
-      <div className="flex justify-between items-center px-12 mb-8">
+    <div className="pt-[3%] bg-white rounded-lg shadow-lg mt-[4%] pb-[3%]">
+      <div className="flex flex-col md:flex-row justify-between items-center px-[2%] sm:px-[3%] mb-[3%]">
         <h2 className="text-3xl text-gray-600">Vehículos Destacados</h2>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-[2%] bg-gray-50 p-[1%] px-[2%] rounded-full shadow-sm">
+          <div className={`flex items-center gap-[1%] ${!showInitialPrice ? "text-red-600 font-medium" : "text-gray-500"}`}>
+            <DollarSign className={`h-[1rem] w-[1rem] ${!showInitialPrice ? "text-red-600" : "text-gray-400"}`} />
+            <Label htmlFor="featured-price-mode" className="cursor-pointer">
+              Precio total
+            </Label>
+          </div>
           <Switch
             id="featured-price-mode"
             checked={showInitialPrice}
             onCheckedChange={setShowInitialPrice}
+            className="data-[state=checked]:bg-red-600"
           />
-          <Label htmlFor="featured-price-mode" className="text-sm text-gray-600">
-            {showInitialPrice ? "Mostrar precio total" : "Mostrar precio inicial"}
-          </Label>
+          <div className={`flex items-center gap-2 ${showInitialPrice ? "text-red-600 font-medium" : "text-gray-500"}`}>
+            <Tag className={`h-4 w-4 ${showInitialPrice ? "text-red-600" : "text-gray-400"}`} />
+            <Label htmlFor="featured-price-mode" className="cursor-pointer">
+              Precio inicial
+            </Label>
+          </div>
+          <div className={`flex items-center gap-[1%] ${showInitialPrice ? "text-red-600 font-medium" : "text-gray-500"}`}>
+            <Tag className={`h-[1rem] w-[1rem] ${showInitialPrice ? "text-red-600" : "text-gray-400"}`} />
+            <Label htmlFor="featured-price-mode" className="cursor-pointer">
+              Precio inicial
+            </Label>
+          </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 px-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid px-[5%] grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[2%]">
         {featuredVehicles.map((vehicle) => (
           <VehicleCard
             key={vehicle.id}
@@ -109,7 +126,7 @@ export function FeaturedVehicles({ setIsDialogOpen, isDialogOpen, onClick }: Fea
           />
         ))}
       </div>
-      <div className="mt-8 text-center">
+      <div className="mt-[3%] text-center">
         <Button variant="outline" size="lg" onClick={() => navigate('/catalogo')}>
           Ver todos los vehículos
         </Button>

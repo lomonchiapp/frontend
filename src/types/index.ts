@@ -21,3 +21,17 @@ export interface Dealer {
   phone?: string
   schedule?: string
 }
+
+export interface VehicleCategory {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+}
+
+export interface Brand {
+  id: string;
+  name: string;
+  description: string;
+  logo: string;
+}

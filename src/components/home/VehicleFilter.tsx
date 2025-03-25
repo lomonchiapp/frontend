@@ -79,12 +79,12 @@ export function VehicleFilter() {
           )}
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-[400px] bg-white sm:w-[540px] p-0">
-        <SheetHeader className="p-6 pb-2">
+      <SheetContent side="right" className="w-[90vw] max-w-[80%] bg-white sm:max-w-[60%] md:max-w-[40%] p-0">
+        <SheetHeader className="p-[3%] pb-[1%]">
           <SheetTitle>Filtros de Búsqueda</SheetTitle>
         </SheetHeader>
 
-        <ScrollArea className="h-[calc(100vh-120px)] px-6">
+        <ScrollArea className="h-[calc(100vh-120px)] px-[3%]">
           <div className="space-y-8 pb-8">
             <div className="space-y-4">
               <Label className="text-base">Marcas</Label>
@@ -94,7 +94,7 @@ export function VehicleFilter() {
                     <Checkbox
                       id={`brand-${brand.id}`}
                       checked={selectedBrands.some(b => b.id === brand.id)}
-                      onCheckedChange={() => handleBrandToggle(brand)}
+                      onCheckedChange={() => handleBrandToggle(brand as Brand)}
                     />
                     <label htmlFor={`brand-${brand.id}`}>{brand.name}</label>
                   </div>
@@ -110,7 +110,7 @@ export function VehicleFilter() {
                     <Checkbox
                       id={`category-${category.id}`}
                       checked={selectedCategories.some(c => c.id === category.id)}
-                      onCheckedChange={() => handleCategoryToggle(category)}
+                      onCheckedChange={() => handleCategoryToggle(category as unknown as VehicleCategory)}
                     />
                     <label htmlFor={`category-${category.id}`}>{category.name}</label>
                   </div>
@@ -199,14 +199,14 @@ export function VehicleFilter() {
         </ScrollArea>
 
         {activeFiltersCount > 0 && (
-          <div className="p-6 pt-2 border-t">
+          <div className="p-[3%] pt-[1%] border-t">
             <Button
               variant="destructive"
               size="sm"
               className="w-full"
               onClick={handleResetFilters}
             >
-              <X className="h-4 w-4 mr-1" />
+              <X className="h-[1rem] w-[1rem] mr-[1%]" />
               Limpiar filtros
             </Button>
           </div>

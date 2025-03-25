@@ -35,11 +35,11 @@ export function SearchInput({ inputRef, onSearchActiveChange }: SearchInputProps
 
   return (
     <motion.div 
-      className="space-y-6 px-12 py-4 rounded-[2rem] shadow-2xl
+      className="space-y-[3%] px-[2%] sm:px-[4%] md:px-[6%] py-[2%] rounded-[2rem] shadow-2xl
         bg-gradient-to-r from-[#38367D] via-[#4b47a1] to-[#38367D]
         animate-gradient-x bg-[length:200%_200%]
         border border-white/10 backdrop-blur-sm
-        w-full max-w-5xl mx-auto relative
+        w-full max-w-full md:max-w-[90%] mx-auto relative
         before:absolute before:inset-0 before:rounded-[2rem]
         before:bg-gradient-to-r before:from-white/5 before:to-transparent
         before:backdrop-blur-sm"
@@ -47,7 +47,7 @@ export function SearchInput({ inputRef, onSearchActiveChange }: SearchInputProps
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="absolute -inset-[1px] bg-gradient-to-r from-white/20 to-transparent rounded-[2rem] blur-sm" />
+      <div className="absolute -inset-[0.5%] bg-gradient-to-r from-white/20 to-transparent rounded-[2rem] blur-sm" />
       
       <div className="relative space-y-6">
         <div className="space-y-2">
@@ -59,8 +59,8 @@ export function SearchInput({ inputRef, onSearchActiveChange }: SearchInputProps
           </h4>
         </div>
 
-        <div className="relative max-w-2xl mx-auto">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-white/20 to-white/10 rounded-xl blur-sm" />
+        <div className="relative max-w-[90%] mx-auto">
+          <div className="absolute -inset-[0.5%] bg-gradient-to-r from-white/20 to-white/10 rounded-xl blur-sm" />
           
           <div className="relative">
             <Input
@@ -70,7 +70,7 @@ export function SearchInput({ inputRef, onSearchActiveChange }: SearchInputProps
               value={searchText}
               onChange={handleInputChange}
               onFocus={handleInputFocus}
-              className="h-14 px-6 rounded-xl font-medium bg-white/10 backdrop-blur-md
+              className="h-auto min-h-[3.5rem] px-[3%] py-[1.5%] rounded-xl font-medium bg-white/10 backdrop-blur-md
                 text-white placeholder:text-white/50 border-white/20
                 transition-all duration-300 
                 focus:bg-white focus:text-black focus:border-white

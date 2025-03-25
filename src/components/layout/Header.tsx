@@ -4,6 +4,8 @@ import { LogIn, PhoneCall, Menu } from 'lucide-react'
 import { useThemeState } from '@/context/useThemeState'
 import { AboutDialog } from '../AboutUs/AboutDialog'
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { useAuthState } from '@/context/useAuthState'
+import { UserMenu } from '../Auth/UserMenu'
 
 const APP_URL = 'https://app.orientalramirez.com'
 
@@ -42,9 +44,10 @@ function NavLinks() {
 
 export function Header() {
   const { about, setAbout } = useThemeState()
+  const { user, setLoginDialogOpen } = useAuthState()
 
   const handleLogin = () => {
-    window.location.href = APP_URL
+    setLoginDialogOpen(true)
   }
 
   return (
@@ -55,7 +58,7 @@ export function Header() {
             <img 
               src="/logo.png" 
               alt="Logo" 
-              className="h-28 md:h-32 pt-2 mt-14 w-auto"
+              className="h-20 md:h-24 pt-2 mt-10 w-auto object-contain"
             />
           </Link>
           <nav className="hidden lg:flex items-center gap-8">
@@ -64,15 +67,19 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2 md:gap-4">
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="hidden md:flex items-center gap-2"
-            onClick={handleLogin}
-          >
-            <LogIn className="h-4 w-4" />
-            <span className="hidden sm:inline">Acceder</span>
-          </Button>
+          {user ? (
+            <UserMenu />
+          ) : (
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="hidden md:flex items-center gap-2"
+              onClick={handleLogin}
+            >
+              <LogIn className="h-4 w-4" />
+              <span className="hidden sm:inline">Acceder</span>
+            </Button>
+          )}
 
           <Button 
             variant="default" 
@@ -94,15 +101,19 @@ export function Header() {
               <nav className="flex flex-col gap-4 mt-8">
                 <NavLinks />
                 <div className="flex flex-col gap-2 mt-4">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="justify-start"
-                    onClick={handleLogin}
-                  >
-                    <LogIn className="h-4 w-4 mr-2" />
-                    Acceder
-                  </Button>
+                  {user ? (
+                    <UserMenu />
+                  ) : (
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="justify-start"
+                      onClick={handleLogin}
+                    >
+                      <LogIn className="h-4 w-4 mr-2" />
+                      Acceder
+                    </Button>
+                  )}
                   <Button variant="default" size="sm" className="justify-start bg-red-500 hover:bg-red-600">
                     <PhoneCall className="h-4 w-4 mr-2" />
                     Contactar Ventas

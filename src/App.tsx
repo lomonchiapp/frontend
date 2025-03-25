@@ -6,16 +6,37 @@ import { Header } from './components/layout/Header'
 import { Footer } from './components/layout/Footer'
 import Home from './pages/Home'
 import './index.css'
-import { useGlobalState } from './hooks/context/global/useGlobalState'
 import { getVehicles } from '@/hooks/getVehicles'
 import { getBrands } from './hooks/getBrands'
 import { getCategories } from './hooks/getCategories'
 import Dealers from './pages/Dealers'
 import Catalog from './pages/Catalog'
 import Financing from './pages/Financing'
+import { useAuthState } from './context/useAuthState'
+import { FIREBASE_AUTH } from './firebase'
+import { onAuthStateChanged } from 'firebase/auth'
+import { AdminTopBar } from './components/Admin/AdminTopBar'
+import { LoginDialog } from './components/Auth/LoginDialog'
+import { useGlobalState } from './hooks/context/global/useGlobalState'
 
 function App() {
   const { vehicles, setVehicles, brands, setBrands, categories, setCategories } = useGlobalState()
+  const { setUser, setLoading } = useAuthState()
+
+  // Handle authentication state
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, (user) => {
+      setLoading(true)
+      if (user) {
+        setUser(user)
+      } else {
+        setUser(null)
+      }
+      setLoading(false)
+    })
+
+    return () => unsubscribe()
+  }, [setUser, setLoading])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,7 +62,8 @@ function App() {
     <HelmetProvider>
       <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
         <Router>
-          <div className="flex flex-col min-h-screen bg-background text-foreground">
+          <div className="flex flex-col min-h-screen bg-background text-foreground overflow-x-hidden">
+            <AdminTopBar />
             <Header />
             <main className="flex-grow">
               <Routes>
@@ -52,6 +74,7 @@ function App() {
               </Routes>
             </main>
             <Footer />
+            <LoginDialog />
           </div>
         </Router>
       </ThemeProvider>

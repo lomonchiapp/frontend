@@ -1,8 +1,6 @@
 import { create } from "zustand";
-import { getVehicles } from '@/hooks/getVehicles';
-import { Vehicle, VehicleCategory, Brand } from "@/types";
-
-
+import { getVehicles } from '../../getVehicles';
+import { Vehicle, VehicleCategory, Brand } from "../../../types/interfaces/vehicle";
 
 interface GlobalState {
     vehicles: Vehicle[];
@@ -28,8 +26,8 @@ export const useGlobalState = create<GlobalState>((set) => ({
     searchText: '',
     vehicles: [],
     filteredVehicles: [],
-    categories:[],
-    brands:[],
+    categories: [],
+    brands: [],
     selectedVehicle: null,
     myInit: 0,
     setMyInit: (myInit: number) => set({ myInit }),
@@ -40,7 +38,7 @@ export const useGlobalState = create<GlobalState>((set) => ({
     setSelectedVehicle: (vehicle: Vehicle | null) => set({ selectedVehicle: vehicle }),
     setSearchText: (searchText: string) => set({ searchText }),
     fetchVehicles: async () => {
-        const vehicles = await getVehicles();
+        const vehicles = await getVehicles(true);
         set({ vehicles });
     }
 }));
