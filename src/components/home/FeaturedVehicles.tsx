@@ -8,7 +8,8 @@ import { Vehicle } from '@/types'
 import { useNavigate } from 'react-router-dom'
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
-import { DollarSign, Tag } from 'lucide-react'
+import { DollarSign, Tag, Eye } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 interface FeaturedVehiclesProps {
   setIsDialogOpen: (open: boolean) => void
@@ -22,6 +23,7 @@ export function FeaturedVehicles({ setIsDialogOpen, isDialogOpen, onClick }: Fea
   const [loading, setLoading] = useState(true)
   const [showInitialPrice, setShowInitialPrice] = useState(false)
   const navigate = useNavigate()
+
   useEffect(() => {
     const loadVehicles = async () => {
       try {
@@ -38,27 +40,46 @@ export function FeaturedVehicles({ setIsDialogOpen, isDialogOpen, onClick }: Fea
     setLoading(false)
   }, [fetchVehicles, vehicles.length])
 
-
   if (error) {
     return (
-      <Alert variant="destructive">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Error</AlertTitle>
-        <AlertDescription>{error}</AlertDescription>
-      </Alert>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+      >
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      </motion.div>
     )
   }
 
   if (loading) {
     return (
-      <div className="grid px-[5%] grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[2%]">
-        {[...Array(8)].map((_, index) => (
-          <div key={index} className="animate-pulse">
-            <div className="bg-gray-300 h-[12rem] rounded-lg mb-[2%]"></div>
-            <div className="bg-gray-300 h-[1rem] w-[75%] rounded mb-[2%]"></div>
-            <div className="bg-gray-300 h-[1rem] w-[50%] rounded"></div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8">
+          {/* Header skeleton */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 space-y-4 sm:space-y-0">
+            <div className="h-8 w-48 bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-10 w-64 bg-gray-200 rounded-full animate-pulse"></div>
           </div>
-        ))}
+          
+          {/* Grid skeleton */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+            {[...Array(4)].map((_, index) => (
+              <div key={index} className="animate-pulse">
+                <div className="bg-gray-200 aspect-[4/3] rounded-xl mb-4"></div>
+                <div className="space-y-2">
+                  <div className="bg-gray-200 h-5 w-3/4 rounded"></div>
+                  <div className="bg-gray-200 h-4 w-1/2 rounded"></div>
+                  <div className="bg-gray-200 h-4 w-2/3 rounded"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     )
   }
@@ -82,56 +103,103 @@ export function FeaturedVehicles({ setIsDialogOpen, isDialogOpen, onClick }: Fea
   }
 
   return (
-    <div className="pt-[3%] bg-white rounded-lg shadow-lg mt-[4%] pb-[3%]">
-      <div className="flex flex-col md:flex-row justify-between items-center px-[2%] sm:px-[3%] mb-[3%]">
-        <h2 className="text-3xl text-gray-600">Vehículos Destacados</h2>
-        <div className="flex items-center gap-[2%] bg-gray-50 p-[1%] px-[2%] rounded-full shadow-sm">
-          <div className={`flex items-center gap-[1%] ${!showInitialPrice ? "text-red-600 font-medium" : "text-gray-500"}`}>
-            <DollarSign className={`h-[1rem] w-[1rem] ${!showInitialPrice ? "text-red-600" : "text-gray-400"}`} />
-            <Label htmlFor="featured-price-mode" className="cursor-pointer">
-              Precio total
-            </Label>
+    <motion.div 
+      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
+      <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+        {/* Header */}
+        <div className="p-6 sm:p-8 border-b border-gray-100">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
+            <div className="space-y-1">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">
+                Vehículos Destacados
+              </h2>
+              <p className="text-sm text-gray-600">
+                Los modelos más populares y mejor valorados
+              </p>
+            </div>
+            
+            {/* Price Toggle */}
+            <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-xl shadow-sm border">
+              <div className={`flex items-center gap-2 transition-colors duration-200 ${
+                !showInitialPrice ? "text-red-600 font-medium" : "text-gray-500"
+              }`}>
+                <DollarSign className={`h-4 w-4 ${!showInitialPrice ? "text-red-600" : "text-gray-400"}`} />
+                <Label 
+                  htmlFor="featured-price-mode" 
+                  className="cursor-pointer text-sm whitespace-nowrap select-none"
+                >
+                  Precio total
+                </Label>
+              </div>
+              
+              <Switch
+                id="featured-price-mode"
+                checked={showInitialPrice}
+                onCheckedChange={setShowInitialPrice}
+                className="data-[state=checked]:bg-red-600 data-[state=unchecked]:bg-gray-300"
+              />
+              
+              <div className={`flex items-center gap-2 transition-colors duration-200 ${
+                showInitialPrice ? "text-red-600 font-medium" : "text-gray-500"
+              }`}>
+                <Tag className={`h-4 w-4 ${showInitialPrice ? "text-red-600" : "text-gray-400"}`} />
+                <Label 
+                  htmlFor="featured-price-mode" 
+                  className="cursor-pointer text-sm whitespace-nowrap select-none"
+                >
+                  Precio inicial
+                </Label>
+              </div>
+            </div>
           </div>
-          <Switch
-            id="featured-price-mode"
-            checked={showInitialPrice}
-            onCheckedChange={setShowInitialPrice}
-            className="data-[state=checked]:bg-red-600"
-          />
-          <div className={`flex items-center gap-2 ${showInitialPrice ? "text-red-600 font-medium" : "text-gray-500"}`}>
-            <Tag className={`h-4 w-4 ${showInitialPrice ? "text-red-600" : "text-gray-400"}`} />
-            <Label htmlFor="featured-price-mode" className="cursor-pointer">
-              Precio inicial
-            </Label>
+        </div>
+
+        {/* Vehicle Grid */}
+        <div className="p-6 sm:p-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+            {featuredVehicles.map((vehicle, index) => (
+              <motion.div
+                key={vehicle.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <VehicleCard
+                  {...vehicle}
+                  displayPrice={getDisplayPrice(vehicle)}
+                  secondaryPrice={getSecondaryPrice(vehicle)}
+                  showInitialPrice={showInitialPrice}
+                  isDialogOpen={isDialogOpen}
+                  setIsDialogOpen={setIsDialogOpen}
+                  onClick={() => onClick(vehicle)}
+                />
+              </motion.div>
+            ))}
           </div>
-          <div className={`flex items-center gap-[1%] ${showInitialPrice ? "text-red-600 font-medium" : "text-gray-500"}`}>
-            <Tag className={`h-[1rem] w-[1rem] ${showInitialPrice ? "text-red-600" : "text-gray-400"}`} />
-            <Label htmlFor="featured-price-mode" className="cursor-pointer">
-              Precio inicial
-            </Label>
+        </div>
+
+        {/* Footer */}
+        <div className="p-6 sm:p-8 border-t border-gray-100 bg-gray-50/50">
+          <div className="text-center">
+            <Button 
+              variant="outline" 
+              size="lg" 
+              onClick={() => navigate('/catalogo')}
+              className="bg-white hover:bg-gray-50 border-gray-300 text-gray-700 font-medium
+                px-6 py-3 rounded-xl shadow-sm transition-all duration-200
+                hover:shadow-md hover:scale-[1.02] group"
+            >
+              <Eye className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-200" />
+              Ver todos los vehículos
+            </Button>
           </div>
         </div>
       </div>
-      <div className="grid px-[5%] grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[2%]">
-        {featuredVehicles.map((vehicle) => (
-          <VehicleCard
-            key={vehicle.id}
-            {...vehicle}
-            displayPrice={getDisplayPrice(vehicle)}
-            secondaryPrice={getSecondaryPrice(vehicle)}
-            showInitialPrice={showInitialPrice}
-            isDialogOpen={isDialogOpen}
-            setIsDialogOpen={setIsDialogOpen}
-            onClick={() => onClick(vehicle)}
-          />
-        ))}
-      </div>
-      <div className="mt-[3%] text-center">
-        <Button variant="outline" size="lg" onClick={() => navigate('/catalogo')}>
-          Ver todos los vehículos
-        </Button>
-      </div>
-    </div>
+    </motion.div>
   )
 }
 

@@ -9,20 +9,16 @@ export let cachedVehicles: Vehicle[] = [];
 export const getVehicles = async (forceRefresh = false): Promise<Vehicle[]> => {
     // Si forceRefresh es true, ignoramos la caché
     if (!forceRefresh && cachedVehicles.length > 0) {
-        console.log('Usando vehículos del caché en memoria');
         return cachedVehicles;
     }
 
     if (!forceRefresh) {
         const localStorageVehicles = localStorage.getItem('cachedVehicles');
         if (localStorageVehicles) {
-            console.log('Usando vehículos del caché en localStorage');
             cachedVehicles = JSON.parse(localStorageVehicles) as Vehicle[];
-            console.log(cachedVehicles)
             return cachedVehicles;
         }
     } else {
-        console.log('Forzando recarga de vehículos desde Firebase');
     }
 
     try {
@@ -42,10 +38,8 @@ export const getVehicles = async (forceRefresh = false): Promise<Vehicle[]> => {
             });
             localStorage.setItem('cachedVehicles', JSON.stringify(cachedVehicles));
         }
-        console.log('Vehículos obtenidos del servidor:', cachedVehicles.length)
         return cachedVehicles;
     } catch (error) {
-        console.error('Error al obtener los vehículos:', error);
         return [];
     }
 }

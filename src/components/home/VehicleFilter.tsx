@@ -67,10 +67,9 @@ export function VehicleFilter() {
       <SheetTrigger asChild>
         <Button
           variant="outline"
-          size="sm"
           className="w-full justify-center bg-red-500 border-red-500 border-2 text-white"
         >
-          <span className="flex items-center">
+          <span className="flex items-center pt-4 pb-2">
             <Filter className="h-4 w-4 mr-2 color-yellow" />
             Busqueda Avanzada
           </span>
