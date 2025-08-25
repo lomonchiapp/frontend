@@ -12,6 +12,11 @@ import { getCategories } from './hooks/getCategories'
 import Dealers from './pages/Dealers'
 import Catalog from './pages/Catalog'
 import Financing from './pages/Financing'
+import AboutPage from './pages/About'
+import Privacy from './pages/Privacy'
+import Terms from './pages/Terms'
+import Warranty from './pages/Warranty'
+import Returns from './pages/Returns'
 import { useAuthState } from './context/useAuthState'
 import { FIREBASE_AUTH } from './firebase'
 import { onAuthStateChanged } from 'firebase/auth'
@@ -71,6 +76,11 @@ function App() {
                 <Route path="/sucursales" element={<Dealers />} />
                 <Route path="/catalogo" element={<Catalog />} />
                 <Route path="/financiamiento" element={<Financing />} />
+                <Route path="/nosotros" element={<AboutPage />} />
+                <Route path="/privacidad" element={<Privacy />} />
+                <Route path="/terminos" element={<Terms />} />
+                <Route path="/garantia" element={<Warranty />} />
+                <Route path="/devoluciones" element={<Returns />} />
               </Routes>
             </main>
             <Footer />
